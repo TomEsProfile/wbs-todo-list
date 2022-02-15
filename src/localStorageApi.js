@@ -3,131 +3,22 @@ console.log("local storage");
 // key der Todolist im LocalStorage
 const localStorageKey = "todoList";
 
-// -> todoList-Array mit Todo-List-Objekten
-let globalTodoList = getTodoListFromStorage()
 
-// ! Vorsicht! todolist aus LocalStorage entfernen
-const removeTodoList = () => {
-  window.localStorage.removeItem(localStorageKey)
-  
-  globalTodoList.length = 0
-} 
-const clearLocalStorageATTENTION = () => window.localStorage.clear();
-
-/**
- * Daten aus der LocalStorage holen
- * @returns todo-list
- */
-function getTodoListFromStorage() {
-
-  let todos = []
-
-  if (window.localStorage.getItem(localStorageKey)) {
-    // ! Vorsicht: ist JSON-Data, muss noch in Todo-Objekte gewandelt werden (siehe Init unten)
-    todos = JSON.parse(window.localStorage.getItem(localStorageKey));
-  }
-
-  return todos
-}
-
-/**
- * Daten in die LocalStorage speichern
- * @param {*} todoList 
- */
-function addTodoListToLocalStorage(todoList) {  
-  window.localStorage.setItem(localStorageKey, JSON.stringify(todoList));
-  console.table(todoList);
-}
-
-/**
- * -> Todo-Eintrag hinzufügen
- * 
- * erwartet ein Objekt der Klasse 'Todo'
- */
-function addTodo(todo) {
-  // -todo der Liste hinzufuegen
-  globalTodoList.push(todo);
-
-  // -todo-list im Storage speichern
-  addTodoListToLocalStorage(globalTodoList);
-}
-
-/**
- * ein Todo entfernen
- * @param {*} id des Todo's
- */
- function getTodo(id) {
-  return globalTodoList.find(todo => todo.id === id)
-}
-
-/**
- * ein Todo entfernen
- * @param {*} id des Todo's
- */
- function removeTodo(id) {
-  globalTodoList = globalTodoList.filter(todo => todo.id !== id)
-  addTodoListToLocalStorage(globalTodoList)
-}
+// ###############################
+// -> Haupt-TodoList-Array mit 'Todo'-Class-Objekten
+let globalTodoList = []
 
 
-/**
- * ein Todo entfernen
- * @param {*} id des Todo's
- */
- function completeTodo(id) {
-  const todo = getTodo(id)
-  todo.completed() // siehe Class Todo
-  addTodoListToLocalStorage(globalTodoList)
-}
-
-
-/**
- * Neues Todo-Objekt generieren -> wird in TodoListe eingefuegt
- * 
- * @param {*} type 
- * @param {*} description 
- * @param {*} order 
- * @param {*} dateCreation 
- * @param {*} isCompleted 
- * @param {*} dateCompletion 
- * @param {*} isImportant 
- * @returns 
- */
-function createTodo(type, description, order = 1, dateCreation = new Date(), isCompleted = false, dateCompletion = null, isImportant = false) {
-  const maxId = getMaxId(globalTodoList);
-
-  // todo max order noch setzen
-
-  const todo = new Todo(maxId, type, description, order, dateCreation, isCompleted, dateCompletion, isImportant)
-
-  return todo
-}
-
-/**
- * Max-Id der Todo-List ermitteln
- * 
- * @returns maxId
- */
-function getMaxId(todoList) {
-  if(todoList.length === 0) {
-    return 1;
-  }
-
-  const maxId = Math.max(...todoList.map(todo => todo.id)) + 1
-  console.log(`maxId: ${maxId}`);
-  return maxId;
-}
 
 /**
  * -Todo-Klasse mit diversen Attributen
  * 
- * zum Erstellen einer Instanz -> 
- *              let todo = new Todo()
+ * zum Erstellen einer Instanz -> "let todo = new Todo(<listName>, <description>)"
  */
-class Todo {
-  constructor(id, type, description, order = 1, dateCreation = new Date(), isCompleted = false, dateCompletion = null, isImportant = false) {
+ class Todo {
+  constructor(id, listName, description, order = 1, dateCreation = new Date(), isCompleted = false, dateCompletion = null, isImportant = false) {
     this.id = id
-    this.type = type
+    this.listName = listName
     this.description = description
     this.order = order
     this.dateCreation = dateCreation
@@ -163,43 +54,206 @@ class Todo {
   }
 }
 
+
+// #####################################
+// LOCAL STORAGE FUNCTIONS
+
 /**
- * -Todo-List-Typen holen (->sidebar-list!)
- *    -> Anzahl an Todos pro Typ wird mitgeliefert
- * 
- * return -> example
-      type        count
-	    'homework'  1
-	    'shopping'	5
+ * Daten aus der LocalStorage holen
+ * @returns todo-list
  */
-function getListTypes() {
-  // nur die List-Typen auflisten
-  const types = globalTodoList.map(todo => todo.type)
-  // Duplicate entfernen
-  let uniqueTypes = [...new Set(types)]
+function getTodoListFromStorage() {
 
-  // objekte mit Anzahl an Todos pro List-Type zurueckgeben
-  uniqueTypes = uniqueTypes.map(type => {
-    // Objekt kreieren -> Typ + Anzahl an todo's pro Typ (siehe console.table-Output)
-    return {
-      type: type, 
-      count: types.reduce((acc, curr) => acc + (curr === type ? 1 : 0), 0)
-    }
-  })
+  let todos = []
 
-  console.table(uniqueTypes);
+  if (window.localStorage.getItem(localStorageKey)) {
+    // ! Vorsicht: ist JSON-Data, muss noch in Todo-Objekte gewandelt werden (siehe Init unten)
+    todos = JSON.parse(window.localStorage.getItem(localStorageKey));
+    // von Json to Todo-Class konvertieren
+    todos = todos.map(jsonTodo => Todo.from(jsonTodo))
+  }
 
-  return uniqueTypes;
+  return todos
 }
 
 /**
- * returns all todo's of a type (->sidebar-list!), order by order or date (?)
- * 
- * @param {*} type type of todo-list
+ * Daten in die LocalStorage speichern
+ * @param {*} todoList 
  */
-function getTodosOfType(type) {
-  const todosOfType = globalTodoList
-    .filter(todo => todo.type === type)
+function addTodoListToLocalStorage(todoList) {  
+  window.localStorage.setItem(localStorageKey, JSON.stringify(todoList));
+  console.table(todoList);
+}
+
+// ! Vorsicht! todolist aus LocalStorage entfernen
+const removeTodoList = () => {
+  window.localStorage.removeItem(localStorageKey)
+  
+  globalTodoList.length = 0
+} 
+const clearLocalStorageATTENTION = () => window.localStorage.clear();
+
+
+
+// #####################################
+// -TODOLIST FUNCTIONS (Hauptpart)
+
+
+/**
+ * ein Todo holen 
+ * 
+ * returned ein Objekt der Klasse 'Todo'  
+ * 
+ * @param {*} id des Todo's
+ */
+ function getTodo(id) {
+  return globalTodoList.find(todo => todo.id === id)
+}
+
+/**
+ * -> Todo-Eintrag hinzufügen
+ * 
+ * erwartet ein Objekt der Klasse 'Todo'
+ */
+function addTodo(todo) {
+  // -todo der Liste hinzufuegen
+  globalTodoList.push(todo);
+
+  // -todo-list im Storage speichern
+  addTodoListToLocalStorage(globalTodoList);
+}
+
+/**
+ * -> Todo-Eintrag aendern
+ * 
+ * erwartet ein Objekt der Klasse 'Todo' (mit 'id')
+ */
+function editTodo(todo) {
+  let idxTodo = -1
+
+  if(!todo.id) {
+    console.error('editTodo >> todo ohne ID!');
+    return // Abbruch
+  }
+
+  idxTodo = globalTodoList.indexOf(getTodo(todo.id))
+
+  // const todoStorage = globalTodoList.find((todoStorage, idx) => {
+  //   if(todoStorage.id === todo.id) {
+  //     idxTodo =  idx
+  //     return true
+  //   }
+  // })
+  console.log(`idxTodo: ${idxTodo}`)
+  globalTodoList[idxTodo] = todo
+
+  // -todo-list im Storage speichern
+  addTodoListToLocalStorage(globalTodoList);
+}
+
+/**
+ * ein Todo entfernen
+ * 
+ * @param {*} id des Todo's
+ */
+ function removeTodo(id) {
+  // filter-Array ohne dem Todo mit der uebergebenen 'id' 
+  globalTodoList = globalTodoList.filter(todo => todo.id !== id)
+  //    -> dieses Array dann in localStorage speichern
+  addTodoListToLocalStorage(globalTodoList)
+}
+
+
+/**
+ * ein Todo 'erledigen'
+ * 
+ * @param {*} id des Todo's
+ */
+ function completeTodo(id) {
+  const todo = getTodo(id)
+
+  // siehe Class Todo
+  todo.completed() 
+  
+  // in localStorage speichern
+  addTodoListToLocalStorage(globalTodoList)
+}
+
+
+/**
+ * Neues Todo-Objekt generieren -> wird in TodoListe eingefuegt
+ * 
+ * @param {*} listName 
+ * @param {*} description 
+ * @param {*} order 
+ * @param {*} dateCreation 
+ * @param {*} isCompleted 
+ * @param {*} dateCompletion 
+ * @param {*} isImportant 
+ * @returns 
+ */
+function createTodo(listName, description, order = 1, dateCreation = new Date(), isCompleted = false, dateCompletion = null, isImportant = false) {
+  const maxId = getMaxId(globalTodoList);
+
+  // todo max order noch setzen
+
+  const todo = new Todo(maxId, listName, description, order, dateCreation, isCompleted, dateCompletion, isImportant)
+
+  return todo
+}
+
+/**
+ * Max-Id der Todo-List ermitteln (fuer neues Todo)
+ * 
+ * @returns maxId
+ */
+function getMaxId(todoList) {
+  if(todoList.length === 0) {
+    return 1;
+  }
+
+  const maxId = Math.max(...todoList.map(todo => todo.id)) + 1
+  console.log(`maxId: ${maxId}`);
+  return maxId;
+}
+
+/**
+ * -Todo-Listen-Namen holen (->sidebar-list!)
+ *    -> Anzahl an Todos pro Typ wird mitgeliefert
+ * 
+ * return -> example
+      listName    count
+	    'homework'  1
+	    'shopping'	5
+ */
+function getListNames() {
+  // nur die Listen-(Namen) auflisten
+  const listNames = globalTodoList.map(todo => todo.listName)
+  // Duplicate entfernen
+  let uniqueListNames = [...new Set(listNames)]
+
+  // objekte mit Anzahl an Todos pro Liste(n-Name) zurueckgeben
+  uniqueListNames = uniqueListNames.map(listName => {
+    // Objekt kreieren -> Listenname + Anzahl an todo's pro Liste (siehe console.table-Output)
+    return {
+      listName: listName, 
+      count: listNames.reduce((acc, curr) => acc + (curr === listName ? 1 : 0), 0)
+    }
+  })
+
+  console.table(uniqueListNames);
+
+  return uniqueListNames;
+}
+
+/**
+ * returns all todo's of a 'listName' (->sidebar-list!), order by order or date (?)
+ * 
+ * @param {*} listName name of todo-list
+ */
+function getTodosOfList(listName) {
+  const todosOfList = globalTodoList
+    .filter(todo => todo.listName === listName)
     .sort((prev, curr) => {
       // nach 'order' sortieren, wenn gleiche 'order' -> dann nach dateCreation sortieren
       if(prev.order !== curr.order) {
@@ -209,13 +263,15 @@ function getTodosOfType(type) {
       }
     })
 
-  console.table(todosOfType)
+  console.table(todosOfList)
 
-  return todosOfType
+  return todosOfList
 }
 
 // #############################
 // ################## INIT START
+
+globalTodoList = getTodoListFromStorage()
 
 // wenn leer -> standard-todos reinsetzen
 if(globalTodoList.length === 0) {
@@ -224,10 +280,10 @@ if(globalTodoList.length === 0) {
   // -todo-list im Storage speichern
   addTodoListToLocalStorage(globalTodoList);
 } 
-else {
-  // von Json to Todo-Class konvertieren
-  globalTodoList = globalTodoList.map(jsonTodo => Todo.from(jsonTodo))
-}
+// else {
+//   // von Json to Todo-Class konvertieren
+//   globalTodoList = globalTodoList.map(jsonTodo => Todo.from(jsonTodo))
+// }
 
 console.table(globalTodoList);
 // console.log(getTodo(6).dateCreation.toLocaleString())
