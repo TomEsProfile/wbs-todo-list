@@ -22,7 +22,7 @@ margin: 0 auto;
 #addNewlist {
     border: 5px solid red;
     margin: 0;
-	width: 20%;
+	width: 30%;
 }
 
 button {
@@ -42,7 +42,7 @@ button {
     border: 5px solid coral;
 }
 
- ul {
+ #elementAddList {
     padding-left: 0;
  }
 
@@ -67,7 +67,7 @@ ul li:nth-child(odd) {
 #myList {
     border: 5px solid blue;
     margin: 0;
-	width: 80%;
+	width: 70%;
 }
 
 #addNewToDo {
@@ -76,9 +76,22 @@ ul li:nth-child(odd) {
     margin-left: 1rem;
 }
 
+.flexContainer2 {
+    border: 5px solid green;
+    display: flex;
+    margin: 0 auto;
+    
+    }
+
 #listElement {
     border: 5px solid black;
     margin: 0px;
-	max-width: 60%;
+	width: 70%;
 }
 
+#operationsOnListElements {
+    border: 5px solid yellow;
+    display: inline-block;
+    width: 30%;
+    text-align: start;
+}
