@@ -1,4 +1,4 @@
-console.log("local storage");
+console.log("local storage api");
 
 // key der Todolist im LocalStorage
 const localStorageKey = "todoList";
