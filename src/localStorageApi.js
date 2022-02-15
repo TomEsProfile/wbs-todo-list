@@ -156,6 +156,11 @@ class Todo {
     this.isCompleted = true
     this.dateCompletion = new Date()
   }
+
+  // todo uncompleted-function erstellen
+  uncompleted() {
+    // ... code
+  }
 }
 
 /**
