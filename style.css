@@ -78,7 +78,7 @@ ul li:nth-child(odd) {
 
 #listElement {
     border: 5px solid black;
-    margin: ;
+    margin: 0px;
 	max-width: 60%;
 }
 
