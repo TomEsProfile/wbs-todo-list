@@ -68,24 +68,24 @@ function createToDoElement(typeofElement, content = "test", isCreated = false){
 }
 
 function showListList(){
-    var allLists = getListTypes();
+    var allLists = getAllLists();
     allLists.forEach((element) => {
         createToDoElement("list", content = element.type)
         console.log({ element });
     });
 }
 
-function showList(listType){
+function showList(listName){
     clearListArea();
-    var allELements = getList(listType);
+    var allELements = getList(listName);
     allELements.forEach((element) => {
         createToDoElement("todo", content = element.type)
         console.log({ element });
     });
 }
 /* bitte zu Ende schreiben*/
-function addNewList(listType){
-   console.log("Hi");
+function addNewList(listName){
+   addList(listName);
 }
 
 function deleteElement(todoElement){
