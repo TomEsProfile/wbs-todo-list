@@ -47,7 +47,7 @@ function createTodo(listName, description)
 ```
 // das globale TodoList-Array wird mit diesen Todo-Objekten 'gefuellt'
 class Todo {
-this.id = id
+    this.id = id
     this.listName = listName
     this.description = description
     this.order = order
