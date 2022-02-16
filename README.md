@@ -7,7 +7,7 @@ wbs week 3+4 Todo List
 ### Übersicht der Api-Funktionen
 
 > Listen-Funktionen
-```
+```javascript
 // einen neue Liste hinzufügen
 function addList(listName)
 
@@ -20,7 +20,7 @@ function getList(listName)
 
 
 > Todo-Funktionen
-```
+```javascript
 // eine Todo mit 'id' holen
 function getTodo(id)
 
@@ -44,7 +44,7 @@ function createTodo(listName, description)
 ```
 
 > Todo-Objekt -> Klassen-Objekt mit diversen Attributen
-```
+```javascript
 // das globale TodoList-Array wird mit diesen Todo-Objekten 'gefuellt'
 class Todo {
     this.id = id
@@ -61,7 +61,7 @@ class Todo {
 ### Beispiel Implementiereungen
 
 > alle Listen holen und ausgeben
-```
+```javascript
 function testGetAllLists() {
 
   getAllLists().forEach(list => {
@@ -76,7 +76,7 @@ function testGetAllLists() {
 ```
 
 > alle Todo's einer Liste holen und ausgeben
-```
+```javascript
 function testGetListTodos() {
   // Liste 'shopping' holen
   const todos = getList('shopping')
@@ -95,7 +95,7 @@ function testGetListTodos() {
 ```
 
 > eine neue Liste hinzufügen
-```
+```javascript
 function testAddNewList() {
   
   const todo = addList('shopping')
@@ -113,5 +113,5 @@ function testAddNewList() {
 
 
 > Vorlage
-```
+```javascript
 ```
