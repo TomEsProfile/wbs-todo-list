@@ -1,4 +1,4 @@
-console.log("todo list!");
+console.log("todo.js");
 
 window.addEventListener("load", function (event) {
   console.log("seite fertig geladen");
@@ -16,7 +16,7 @@ if (globalTodoList.length < 3) {
   addTodo(createTodo("haushalt", "Saugen"));
 }
 
-console.log(globalTodoList);
+// console.log(globalTodoList);
 
 const buttonAddList = document.getElementById("buttonAddList");
 
@@ -29,4 +29,4 @@ function addListToDom(event) {
   });
 }
 
-buttonAddList.addEventListener("click", addList);
+buttonAddList.addEventListener("click", addListToDom);
