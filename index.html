@@ -7,8 +7,7 @@
     <!------------------- GOOGLE FONTS ------------------->
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
     <!------------------- FONT AWESOME ------------------->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous"/>
-    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <script src="https://kit.fontawesome.com/374e3142e2.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style.css">
     <!DOCTYPE html>                  
     <title>WBS Todo List</title>
@@ -16,8 +15,6 @@
 <body>
     <header>
     <h1>Welcome to Group 4 Todo List</h1>
-    <button onclick="createToDoElement('list')">Add entry</button>
-    <button onclick="createToDoElement('todo')">add todo</button>
     <div id="lists">
         
     </div>
@@ -26,25 +23,39 @@
     <main>
       <div class="flexContainer">
         <div id="addNewlist">
-            <button id="buttonAddList"><i class="fas fa-plus-square"></i></button>
+            <button id="buttonAddList" onclick="createToDoElement('list', '', true)"><i class="fas fa-plus-square"></i></button>
             <div class="ul">
                 <ul id="elementAddList">
+                  
                 </ul>
             </div>
         </div>
         <div id="myList">
           <div id="addNewToDo">
-            <input type="text" id="myInput" placeholder="My new to do list...">
-            <button><i class="fas fa-plus-square"></i></button>
+            <input type="text" id="myInput" placeholder="My new to do element...">
+            <button onclick="createToDoElement('todo')"><i class="fas fa-plus-square"></i></button>
           </div>
-        <ul id="listElement">
-        <!--<li>Some text...</li>
-         <i class='fa fa-edit' style='color:black'></i>
-         <i class='fas fa-trash-alt' style='color:black'></i>
-         <li>Some text...</li>
-         <i class='fa fa-edit' style='color:black'></i>
-         <i class='fa fa-edit' style='color:black'></i>-->
-        </ul>
+          <div class="flexContainer2">
+            <ul id="listElement">
+              <li class="listToDo">
+                <input type="checkbox" name="doneCheckbox" id="doneCheckbox"/>
+                <p contenteditable="true">My first task</p>
+                <!-- <p contenteditable="true">Test</p>
+                <p contenteditable="false">Test</p> -->
+                <span>
+                  <button name="deleteTask"><i class="fas fa-trash"></i></button>
+                  <button name="editTask"><i class='fa fa-edit'></i></button>
+                </span>
+              </li>
+              <li>Some text...</li>
+            </ul>
+            <div id="operationsOnListElements">
+              <button><i class="fa-solid fa-check"></i></button>
+              <button><i class='fa fa-edit'></i></button>
+              <button><i class="fas fa-trash"></i></button>
+              <button><i class="fa-solid fa-list-check"></i></button>
+            </div>
+          </div>   
         </div>
       </div>
     </main>

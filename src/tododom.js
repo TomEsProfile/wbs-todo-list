@@ -3,7 +3,7 @@ var todos = document.getElementById("listElement");
 
 var count = 0;
 
-function createToDoElement(typeofElement, content = "test"){
+function createToDoElement(typeofElement, content = "test", isCreated = false){
     switch(typeofElement){
         case 'todo':
             let todo = document.createElement("div");
@@ -29,7 +29,20 @@ function createToDoElement(typeofElement, content = "test"){
         case 'list':
             let list = document.createElement("li");
             let listButton = document.createElement("button");
-            listButton.innerHTML = content;
+            if (isCreated === true) {
+                let listInput = document.createElement("input");
+                listInput.type = "text";
+                listButton.appendChild(listInput);
+                listInput.addEventListener("keydown", function(event) {
+             if (event.key === "Enter") {
+                event.preventDefault();
+                addNewList(list);
+            
+            }
+        });
+            } else {
+                listButton.innerHTML = content;
+            } 
             listButton.onclick=function() { showList(content); };
             list.appendChild(listButton);
 
@@ -45,8 +58,8 @@ function createToDoElement(typeofElement, content = "test"){
             //list.id = "list" + count;
             //count++;
 
-            list.style = "height: 150px; background-color: green;"
-            list.classList.add("class");
+            //list.style = "height: 150px; background-color: green;"
+            list.classList.add("listToDo");
             
             lists.appendChild(list);
             break;
@@ -55,20 +68,24 @@ function createToDoElement(typeofElement, content = "test"){
 }
 
 function showListList(){
-    var allLists = getListTypes();
+    var allLists = getAllLists();
     allLists.forEach((element) => {
-        createToDoElement("list", content = element.type)
+        createToDoElement("list", content = element.listName)
         console.log({ element });
     });
 }
 
-function showList(listType){
+function showList(listName){
     clearListArea();
-    var allELements = getTodosOfType(listType);
+    var allELements = getList(listName);
     allELements.forEach((element) => {
         createToDoElement("todo", content = element.type)
         console.log({ element });
     });
+}
+/* bitte zu Ende schreiben*/
+function addNewList(listName){
+   addList(listName);
 }
 
 function deleteElement(todoElement){
@@ -85,5 +102,3 @@ function clearListArea() {
     	col_wrapper.removeChild(col_wrapper.lastChild);
   	}
 }
-
-showListList()

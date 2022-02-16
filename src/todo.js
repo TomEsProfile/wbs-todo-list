@@ -2,7 +2,7 @@ console.log("todo.js");
 
 window.addEventListener("load", function (event) {
   console.log("seite fertig geladen");
-
+  showListList();
   // ... ab hier dann die Seite aufbauen mit den Daten aus der LocalStorage
   // getListTypes().forEach(list => {
   //     const div = createListDiv()
