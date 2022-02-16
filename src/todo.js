@@ -2,7 +2,10 @@ console.log("todo.js");
 
 window.addEventListener("load", function (event) {
   console.log("seite fertig geladen");
+
+  // sidebar mit Listennamen aufbauen
   showListList();
+
   // ... ab hier dann die Seite aufbauen mit den Daten aus der LocalStorage
   // getListTypes().forEach(list => {
   //     const div = createListDiv()
@@ -21,7 +24,7 @@ if (globalTodoList.length < 3) {
 const buttonAddList = document.getElementById("buttonAddList");
 
 function addListToDom(event) {
-  const lists = getLists();
+  const lists = getAllLists();
   console.log(lists);
   lists.forEach((list) => {
     console.log(list.type);
@@ -29,4 +32,4 @@ function addListToDom(event) {
   });
 }
 
-buttonAddList.addEventListener("click", addListToDom);
+// buttonAddList.addEventListener("click", addListToDom);
