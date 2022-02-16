@@ -37,7 +37,16 @@
           </div>
           <div class="flexContainer2">
             <ul id="listElement">
-              <li>Some text...</li>
+              <li class="listToDo">
+                <input type="checkbox" name="doneCheckbox" id="doneCheckbox"/>
+                <p contenteditable="true">My first task</p>
+                <!-- <p contenteditable="true">Test</p>
+                <p contenteditable="false">Test</p> -->
+                <span>
+                  <button name="deleteTask"><i class="fas fa-trash"></i></button>
+                  <button name="editTask"><i class='fa fa-edit'></i></button>
+                </span>
+              </li>
               <li>Some text...</li>
             </ul>
             <div id="operationsOnListElements">

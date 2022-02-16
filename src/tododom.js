@@ -58,8 +58,8 @@ function createToDoElement(typeofElement, content = "test", isCreated = false){
             //list.id = "list" + count;
             //count++;
 
-            list.style = "height: 150px; background-color: green;"
-            list.classList.add("class");
+            //list.style = "height: 150px; background-color: green;"
+            list.classList.add("listToDo");
             
             lists.appendChild(list);
             break;
@@ -77,7 +77,7 @@ function showListList(){
 
 function showList(listType){
     clearListArea();
-    var allELements = getTodosOfType(listType);
+    var allELements = getList(listType);
     allELements.forEach((element) => {
         createToDoElement("todo", content = element.type)
         console.log({ element });

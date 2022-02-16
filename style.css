@@ -89,6 +89,14 @@ ul li:nth-child(odd) {
 	width: 70%;
 }
 
+.listToDo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
 #operationsOnListElements {
     border: 5px solid yellow;
     display: inline-block;
