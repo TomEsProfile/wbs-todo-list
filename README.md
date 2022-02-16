@@ -11,7 +11,7 @@ wbs week 3+4 Todo List
 // einen neue Liste hinzufügen
 function addList(listName)
 
-// alle Listen holen
+// alle Listen(namen) holen
 function getAllLists()
 
 // Liste holen (liefert alle Todos der Liste)
