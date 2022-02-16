@@ -60,11 +60,12 @@ class Todo {
 
 ### Beispiel Implementiereungen
 
-> alle Listen holen und ausgeben
+> alle Listen(namen) holen (-> Listenübersicht) >> die Anzahl der Todos der jeweiligen Liste wird mitgegeben (list.count)
 ```javascript
 function testGetAllLists() {
 
   getAllLists().forEach(list => {
+    // zwei Angaben
     console.log(`listName: ${list.listName}`);
     console.log(`anzahl todos: ${list.count}`);
 
@@ -108,6 +109,26 @@ function testAddNewList() {
     console.log(`erstellt am: ${todo.dateCreation.toLocaleString()}`);
   }
 
+}
+```
+
+> eine Todo mit 'id' holen
+```javascript
+function testGetTodo() {
+  
+  const todoId = 7
+  // wird ueber id geholt
+  const todo = getTodo(todoId)
+
+  if(!todo) {
+    // error -> nicht gefunden
+    console.error('Todo nicht gefunden!');
+  } else {
+    console.log(`\n ---Todo >> id: ${todo.id}`);
+    console.log(`beschreibung: ${todo.description}`);
+    console.log(`erstellt am: ${todo.dateCreation.toLocaleString()}`);    
+    console.log(`erledigt?: ${todo.isCompleted}`);
+  }
 }
 ```
 
