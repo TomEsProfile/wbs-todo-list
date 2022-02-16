@@ -12,8 +12,8 @@ window.addEventListener("load", function (event) {
   // })
 });
 
-if (globalTodoList.length < 3) {
-  addTodo(createTodo("haushalt", "Saugen"));
+if (_api.globalTodoList.length < 3) {
+  _api.addTodo(_api.createTodo("haushalt", "Saugen"));
 }
 
 // console.log(globalTodoList);
@@ -21,7 +21,7 @@ if (globalTodoList.length < 3) {
 const buttonAddList = document.getElementById("buttonAddList");
 
 function addListToDom(event) {
-  const lists = getLists();
+  const lists = _api.getLists();
   console.log(lists);
   lists.forEach((list) => {
     console.log(list.type);

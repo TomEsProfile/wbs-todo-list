@@ -70,13 +70,13 @@
 
         <button type="button" onclick="testAddRandomTodo()">Add to Random Todo</button>
         <button type="button" onclick="testGetTodoListFromStorage()">Get TodoList from LocalStorage</button>
-        <button type="button" onclick="removeTodoList()">Liste löschen (Vorsicht!)</button>
-        <button type="button" onclick="addList('Liste 101')">neue Liste erstellen</button>
-        <button type="button" onclick="getAllLists()">Alle Listen holen für Sidebar</button>
-        <button type="button" onclick="getList('haushalt')">Todos einer Liste holen</button>
-        <button type="button" onclick="removeTodo(4)">remove Todo mit id 4</button>
-        <button type="button" onclick="completeTodo(5)">complete Todo mit id 5</button>
-        <button type="button" onclick="renameTodo(7, 'New Todo-Name!')">renameTodo mit id 7</button>
+        <button type="button" onclick="_api.removeTodoList()">Liste löschen (Vorsicht!)</button>
+        <button type="button" onclick="_api.addList('Liste 101')">neue Liste erstellen</button>
+        <button type="button" onclick="_api.getAllLists()">Alle Listen holen für Sidebar</button>
+        <button type="button" onclick="_api.getList('haushalt')">Todos einer Liste holen</button>
+        <button type="button" onclick="_api.removeTodo(4)">remove Todo mit id 4</button>
+        <button type="button" onclick="_api.completeTodo(5)">complete Todo mit id 5</button>
+        <button type="button" onclick="_api.renameTodo(7, 'New Todo-Name!')">renameTodo mit id 7</button>
     </section>
 
     <script src="./src/localStorageApi.js"></script>

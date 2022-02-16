@@ -68,7 +68,7 @@ function createToDoElement(typeofElement, content = "test", isCreated = false){
 }
 
 function showListList(){
-    var allLists = getAllLists();
+    var allLists = _api.getAllLists();
     allLists.forEach((element) => {
         createToDoElement("list", content = element.listName)
         console.log({ element });
@@ -77,7 +77,7 @@ function showListList(){
 
 function showList(listName){
     clearListArea();
-    var allELements = getList(listName);
+    var allELements = _api.getList(listName);
     allELements.forEach((element) => {
         createToDoElement("todo", content = element.type)
         console.log({ element });
@@ -85,7 +85,7 @@ function showList(listName){
 }
 /* bitte zu Ende schreiben*/
 function addNewList(listName){
-   addList(listName);
+    _api.addList(listName);
 }
 
 function deleteElement(todoElement){
