@@ -21,12 +21,21 @@ function getList(listName)
 
 > Todo-Funktionen
 ```
-// einen neue Liste hinzufügen
-function addList(listName)
+// eine Todo mit 'id' holen
+function getTodo(id)
 
-// alle Listen holen
-function getAllLists()
+// ein Todo hinzufuegen (erwartet ein Objekt der Klasse 'Todo' [siehe unten])
+function addTodo(todo)
 
-// Liste holen (liefert alle Todos der Liste)
-function getList(listName)
+// ein Todo in der Liste 'ersetzen' (erwartet ein Objekt der Klasse 'Todo' [siehe unten])
+function editTodo(todo) 
+
+// ein Todo löschen
+function removeTodo(id)
+
+// ein Todo 'erledigen'
+function completeTodo(id)
+
+// ein 'erledigtes' Todo wieder zuruecksetzen
+function uncompleteTodo(id)
 ```
