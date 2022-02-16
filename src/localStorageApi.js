@@ -159,7 +159,7 @@ function editTodo(todo) {
  function removeTodo(id) {
   // filter-Array ohne dem Todo mit der uebergebenen 'id' 
   globalTodoList = globalTodoList.filter(todo => todo.id !== id)
-  
+
   //    -> dieses Array dann in localStorage speichern
   addTodoListToLocalStorage(globalTodoList)
 }
@@ -242,6 +242,12 @@ function getMaxId(todoList) {
  * 
  */
 function addList(listName) {
+  // falls Liste schon vorhanden 'null' returnen (kann auf falsy geprueft werden)
+  if(getList(listName).length > 0) {
+    console.error('Liste schon vorhanden!');
+    return false;
+  }
+
   let pseudoTodo = createTodo(listName, 'Neuer Eintrag')
   addTodo(pseudoTodo)
 
@@ -288,6 +294,7 @@ function getAllLists() {
  * @return liefert alle Todo's der Liste
  */
 function getList(listName) {
+  console.log(`listName: ${listName}`);
   const todosOfList = globalTodoList
     .filter(todo => todo.listName === listName)
     .sort((prev, curr) => {
@@ -338,6 +345,7 @@ console.table(globalTodoList);
  */
  function testAddRandomTodo() {
   const todo = createTodo('shopping', 'Produkt ' + Math.floor(Math.random() * 1000))
+  console.table(todo)
   addTodo(todo);
 }
 

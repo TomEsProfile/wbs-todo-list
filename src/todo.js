@@ -20,8 +20,8 @@ console.log(globalTodoList);
 
 const buttonAddList = document.getElementById("buttonAddList");
 
-function addList(event) {
-  const lists = getListNames();
+function addListToDom(event) {
+  const lists = getLists();
   console.log(lists);
   lists.forEach((list) => {
     console.log(list.type);
