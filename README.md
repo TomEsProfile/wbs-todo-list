@@ -38,4 +38,26 @@ function completeTodo(id)
 
 // ein 'erledigtes' Todo wieder zuruecksetzen
 function uncompleteTodo(id)
+
+// Neues Todo-Objekt generieren (bekommt eine Id)
+function createTodo(listName, description)
 ```
+
+> Todo-Objekt -> Klassen-Objekt mit diversen Attributen
+```
+// das globale TodoList-Array wird mit diesen Todo-Objekten 'gefuellt'
+class Todo {
+this.id = id
+    this.listName = listName
+    this.description = description
+    this.order = order
+    this.dateCreation = dateCreation
+    this.isCompleted = isCompleted
+    this.dateCompletion = dateCompletion
+    this.isImportant = isImportant
+}
+```
+
+> Beispiel Implementiereungen
+...
+
