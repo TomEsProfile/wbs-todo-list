@@ -27,11 +27,11 @@ function getTodo(id)
 // ein Todo hinzufuegen (erwartet ein Objekt der Klasse 'Todo' [siehe unten])
 function addTodo(todo)
 
-// ein Todo in der Liste 'ersetzen' (erwartet ein Objekt der Klasse 'Todo' [siehe unten])
-function editTodo(todo) 
-
 // ein Todo löschen
 function removeTodo(id)
+
+// ein Todo in der Liste umbenennen
+function renameTodo(todo) 
 
 // ein Todo 'erledigen'
 function completeTodo(id)
@@ -154,7 +154,23 @@ function testCreateTodo() {
 }
 ```
 
-
-> Vorlage
+> diverse Todo Operationen -> werden automatisch in localStorage gespeichert
 ```javascript
+function testEditTodo() {
+
+  // eindeutige Id des Todos (z.B. Speichern in einem <input type="hidden">)
+  const todoId = 7
+
+  // Beispiel fuer Umbenennen
+  renameTodo(todoId, 'new Todo-Description')
+
+  // Beispiel fuer Löschen
+  removeTodo(todoId)
+
+  // Beispiel fuer Erledigen
+  completeTodo(todoId)
+
+  // Beispiel fuer Zurücksetzen 
+  uncompleteTodo(todoId)
+}
 ```

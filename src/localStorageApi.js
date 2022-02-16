@@ -152,6 +152,21 @@ function editTodo(todo) {
 }
 
 /**
+ * ein Todo umbenennen
+ * 
+ * @param {*} id des Todo's
+ */
+ function renameTodo(id, description) {
+  const todo = getTodo(id)
+
+  // siehe Class Todo
+  todo.description = description 
+  
+  // in localStorage speichern
+  addTodoListToLocalStorage(globalTodoList)
+}
+
+/**
  * ein Todo entfernen
  * 
  * @param {*} id des Todo's
@@ -352,3 +367,101 @@ console.table(globalTodoList);
 function testGetTodoListFromStorage() {  
   console.table(getTodoListFromStorage())
 }
+
+// #############################
+// ################## Beispiel Implementierungen der TodoList-Api
+
+/**
+ * alle Listen holen und ausgeben
+ */
+function testGetAllLists() {
+
+  getAllLists().forEach(list => {
+    console.log(`listName: ${list.listName}`);
+    console.log(`anzahl todos: ${list.count}`);
+
+    // your code: here for example build html-code to add to your nav-bar
+    // let navListElement = createNavListElement(list.listName, list.count)
+    // document.getElementById('navbar').appendChild(navListElement)
+  })
+}
+
+
+/**
+ * alle Todo's einer Liste holen und ausgeben
+ */
+function testGetListTodos() {
+  // Liste 'shopping' holen
+  const todos = getList('shopping')
+  
+  // ueber todos iterieren   
+  todos.forEach(todo => {
+    console.log(`\n ---Todo >> id: ${todo.id}`);
+    console.log(`beschreibung: ${todo.description}`);
+    console.log(`erstellt am: ${todo.dateCreation.toLocaleString()}`);
+
+    // your code: here for example build html-code to add to your <main> section (o.ä.)
+    // let todoDivElement = createTodoDivElement(todo.id, todo.description, todo.dateCreation ...) // oder nur "todo" als parameter uebergeben
+    // document.getElementById('main').appendChild(todoDivElement)
+  })
+}
+
+/**
+ * eine neue Liste hinzufügen
+ */
+function testAddNewList() {
+  
+  const todo = addList('shopping')
+
+  if(!todo) {
+    // error -> Listenname schon vergeben
+  } else {
+    console.log(`\n ---Todo >> id: ${todo.id}`);
+    console.log(`beschreibung: ${todo.description}`); // Pseudo-Eintrag -> 'Neuer Eintrag'
+    console.log(`erstellt am: ${todo.dateCreation.toLocaleString()}`);
+  }
+}
+
+/**
+ * ein Todo mit 'id' holen
+ */
+function testGetTodo() {
+  
+  const todoId = 7
+  // wird ueber id geholt
+  const todo = getTodo(todoId)
+
+  if(!todo) {
+    // error -> nicht gefunden
+    console.error('Todo nicht gefunden!');
+  } else {
+    console.log(`\n ---Todo >> id: ${todo.id}`);
+    console.log(`beschreibung: ${todo.description}`);
+    console.log(`erstellt am: ${todo.dateCreation.toLocaleString()}`);    
+    console.log(`erledigt?: ${todo.isCompleted}`);
+  }
+}
+
+/**
+ * ein neues Todo generieren
+ */
+function testCreateTodo() {
+
+  const listName = 'shopping'
+  const description = 'Meine Todo-Beschreibung'
+
+  // let newTodo = createTodo(listName, description)
+
+  // oder aber auch mit zusätzlichen Parametern, z.B. Reihenfolge
+  const order = 3 
+  let newTodo = createTodo(listName, description, order)
+
+  console.log(`\n ---Todo >> id: ${newTodo.id}`);
+  console.log(`beschreibung: ${newTodo.description}`);
+  console.log(`erstellt am: ${newTodo.dateCreation.toLocaleString()}`);   
+
+  // zum Speichern in localStorge die 'addTodo'-Funktion aufrufen
+  addTodo(newTodo)
+}
+
+
