@@ -16,16 +16,20 @@
 <body>
     <header>
     <h1>Welcome to Group 4 Todo List</h1>
+    <button onclick="createToDoElement('list')">Add entry</button>
+    <button onclick="createToDoElement('todo')">add todo</button>
+    <div id="lists">
+        
+    </div>
+    <div id="todos">
     </header>
     <main>
       <div class="flexContainer">
         <div id="addNewlist">
             <button id="buttonAddList"><i class="fas fa-plus-square"></i></button>
             <div class="ul">
-            <ul>
-            <li>List 1</li>
-            <li>List 2</li>
-            </ul>
+                <ul id="elementAddList">
+                </ul>
             </div>
         </div>
         <div id="myList">
@@ -34,12 +38,12 @@
             <button><i class="fas fa-plus-square"></i></button>
           </div>
         <ul id="listElement">
-        <li>Some text...</li>
-         <button><i class='fa fa-edit'></i></button>
-         <button><i class="fas fa-trash"></i></button>
+        <!--<li>Some text...</li>
+         <i class='fa fa-edit' style='color:black'></i>
+         <i class='fas fa-trash-alt' style='color:black'></i>
          <li>Some text...</li>
          <i class='fa fa-edit' style='color:black'></i>
-         <i class="fas fa-trash"></i>
+         <i class='fa fa-edit' style='color:black'></i>-->
         </ul>
         </div>
       </div>
@@ -50,6 +54,7 @@
         </div>
     </footer>
 
+    </div>
     <section>
 
         <button type="button" onclick="testAddRandomTodo()">Add to Random Todo</button>
@@ -65,5 +70,6 @@
 
     <script src="./src/localStorageApi.js"></script>
     <script src="./src/todo.js"></script>
+    <script src="./src/tododom.js"></script>
 </body>
 </html>
