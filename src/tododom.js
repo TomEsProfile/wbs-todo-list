@@ -70,7 +70,7 @@ function createToDoElement(typeofElement, content = "test", isCreated = false){
 function showListList(){
     var allLists = getAllLists();
     allLists.forEach((element) => {
-        createToDoElement("list", content = element.type)
+        createToDoElement("list", content = element.listName)
         console.log({ element });
     });
 }
@@ -102,5 +102,3 @@ function clearListArea() {
     	col_wrapper.removeChild(col_wrapper.lastChild);
   	}
 }
-
-showListList()
