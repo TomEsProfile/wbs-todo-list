@@ -81,7 +81,7 @@ function getTodoListFromStorage() {
  * Daten in die LocalStorage speichern
  * @param {*} todoList 
  */
-function addTodoListToLocalStorage(todoList) {  
+function saveToLocalStorage(todoList) {  
   window.localStorage.setItem(localStorageKey, JSON.stringify(todoList));
   console.table(todoList);
 }
@@ -120,7 +120,7 @@ function addTodo(todo) {
   globalTodoList.push(todo);
 
   // im Storage speichern
-  addTodoListToLocalStorage(globalTodoList);
+  saveToLocalStorage(globalTodoList);
 }
 
 /**
@@ -148,7 +148,7 @@ function editTodo(todo) {
   globalTodoList[idxTodo] = todo // todo wird evtl nicht benoetigt, da gepointert 
 
   // -todo-list im Storage speichern
-  addTodoListToLocalStorage(globalTodoList);
+  saveToLocalStorage(globalTodoList);
 }
 
 /**
@@ -163,7 +163,7 @@ function editTodo(todo) {
   todo.description = description 
   
   // in localStorage speichern
-  addTodoListToLocalStorage(globalTodoList)
+  saveToLocalStorage(globalTodoList)
 }
 
 /**
@@ -176,7 +176,7 @@ function editTodo(todo) {
   globalTodoList = globalTodoList.filter(todo => todo.id !== id)
 
   //    -> dieses Array dann in localStorage speichern
-  addTodoListToLocalStorage(globalTodoList)
+  saveToLocalStorage(globalTodoList)
 }
 
 
@@ -192,7 +192,7 @@ function editTodo(todo) {
   todo.completed() 
   
   // in localStorage speichern
-  addTodoListToLocalStorage(globalTodoList)
+  saveToLocalStorage(globalTodoList)
 }
 
 
@@ -263,7 +263,9 @@ function addList(listName) {
     return false;
   }
 
+  // einen Pseudo-Eintrag in die Todoliste machen
   let pseudoTodo = createTodo(listName, 'Neuer Eintrag')
+  // in localStorage speichern
   addTodo(pseudoTodo)
 
   console.log(pseudoTodo); // Typ von Class Todo (mit allen Attributen)
@@ -337,7 +339,7 @@ if(globalTodoList.length === 0) {
   addTodo(createTodo('haushalt', 'Wäsche'))
   addTodo(createTodo('haushalt', 'Putzen'))
   // -todo-list im Storage speichern
-  addTodoListToLocalStorage(globalTodoList);
+  saveToLocalStorage(globalTodoList);
 } 
 // else {
 //   // von Json to Todo-Class konvertieren
@@ -463,5 +465,3 @@ function testCreateTodo() {
   // zum Speichern in localStorge die 'addTodo'-Funktion aufrufen
   addTodo(newTodo)
 }
-
-
