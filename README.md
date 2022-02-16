@@ -60,7 +60,7 @@ class Todo {
 
 ### Beispiel Implementiereungen
 
-> alle Liste holen und ausgeben
+> alle Listen holen und ausgeben
 ```
 function testGetAllLists() {
 
@@ -68,10 +68,50 @@ function testGetAllLists() {
     console.log(`listName: ${list.listName}`);
     console.log(`anzahl todos: ${list.count}`);
 
-    // your code: here for example build  html-code to add to your nav-bar
+    // your code: here for example build html-code to add to your nav-bar
     let navListElement = createNavListElement(list.listName, list.count)
     document.getElementById('navbar').appendChild(navListElement)
   })
 }
 ```
 
+> alle Todo's einer Liste holen und ausgeben
+```
+function testGetListTodos() {
+  // Liste 'shopping' holen
+  const todos = getList('shopping')
+  
+  // ueber todos iterieren   
+  todos.forEach(todo => {
+    console.log(`\n ---Todo >> id: ${todo.id}`);
+    console.log(`beschreibung: ${todo.description}`);
+    console.log(`erstellt am: ${todo.dateCreation.toLocaleString()}`);
+
+    // your code: here for example build html-code to add to your <main> section (o.ä.)
+    let todoDivElement = createTodoDivElement(todo.id, todo.description, todo.dateCreation ...) // oder nur "todo" als parameter uebergeben
+    document.getElementById('main').appendChild(todoDivElement)
+  })
+}
+```
+
+> eine neue Liste hinzufügen
+```
+function testAddNewList() {
+  
+  const todo = addList('shopping')
+
+  if(!todo) {
+    // error -> Listenname schon vergeben
+  } else {
+    console.log(`\n ---Todo >> id: ${todo.id}`);
+    console.log(`beschreibung: ${todo.description}`); // Pseudo-Eintrag -> 'Neuer Eintrag'
+    console.log(`erstellt am: ${todo.dateCreation.toLocaleString()}`);
+  }
+
+}
+```
+
+
+> Vorlage
+```
+```
