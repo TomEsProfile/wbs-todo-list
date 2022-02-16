@@ -112,7 +112,7 @@ function testAddNewList() {
 }
 ```
 
-> eine Todo mit 'id' holen
+> ein Todo mit 'id' holen
 ```javascript
 function testGetTodo() {
   
@@ -129,6 +129,28 @@ function testGetTodo() {
     console.log(`erstellt am: ${todo.dateCreation.toLocaleString()}`);    
     console.log(`erledigt?: ${todo.isCompleted}`);
   }
+}
+```
+
+> ein neues Todo generieren
+```javascript
+function testCreateTodo() {
+
+  const listName = 'shopping'
+  const description = 'Meine Todo-Beschreibung'
+
+  let newTodo = createTodo(listName, description)
+
+  // oder aber auch mit zusätzlichen Parametern, z.B. Reihenfolge
+  const order = 3 
+  let newTodo = createTodo(listName, description, order)
+
+  console.log(`\n ---Todo >> id: ${newTodo.id}`);
+  console.log(`beschreibung: ${newTodo.description}`);
+  console.log(`erstellt am: ${newTodo.dateCreation.toLocaleString()}`);   
+
+  // zum Speichern in localStorge die 'addTodo'-Funktion aufrufen
+  addTodo(newTodo)
 }
 ```
 
