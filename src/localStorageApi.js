@@ -1,13 +1,5 @@
 console.log("local storage api");
 
-// key der Todolist im LocalStorage
-const localStorageKey = "todoList";
-
-
-// ###############################
-// -> Haupt-TodoList-Array mit 'Todo'-Class-Objekten; wird in localStorage gespeichert
-let globalTodoList = []
-
 
 
 /**
@@ -16,7 +8,7 @@ let globalTodoList = []
  * zum Erstellen einer Instanz -> "let todo = new Todo(<listName>, <description>)"
  *  -> dafür kann die Funktion 'createTodo(<listName>, <description>) verwendet werden! (siehe unten)
  */
- class Todo {
+  class Todo {
   constructor(id, listName, description, order = 1, dateCreation = new Date(), isCompleted = false, dateCompletion = null, isImportant = false) {
     this.id = id
     this.listName = listName
@@ -54,301 +46,323 @@ let globalTodoList = []
     // ... code
   }
 }
-
-
-// #####################################
-// LOCAL STORAGE FUNCTIONS
-
-/**
- * Daten aus der LocalStorage holen
- * @returns todo-list
- */
-function getTodoListFromStorage() {
-
-  let todos = []
-
-  if (window.localStorage.getItem(localStorageKey)) {
-    // ! Vorsicht: ist JSON-Data, muss noch in Todo-Objekte gewandelt werden (siehe Init unten)
-    todos = JSON.parse(window.localStorage.getItem(localStorageKey));
-    // von Json to Todo-Class konvertieren
-    todos = todos.map(jsonTodo => Todo.from(jsonTodo))
-  }
-
-  return todos
-}
-
-/**
- * Daten in die LocalStorage speichern
- * @param {*} todoList 
- */
-function addTodoListToLocalStorage(todoList) {  
-  window.localStorage.setItem(localStorageKey, JSON.stringify(todoList));
-  console.table(todoList);
-}
-
-// ! Vorsicht! todolist aus LocalStorage entfernen
-const removeTodoList = () => {
-  window.localStorage.removeItem(localStorageKey)
   
-  globalTodoList.length = 0
-} 
-const clearLocalStorageATTENTION = () => window.localStorage.clear();
+class TodoListApi {
 
+  constructor() {
+    // key der Todolist im LocalStorage
+    this.localStorageKey = "todoList";
 
-
-// #####################################
-// -TODO FUNCTIONS (Hauptpart)
-
-/**
- * ein Todo holen 
- * 
- * returned ein Objekt der Klasse 'Todo'  
- * 
- * @param {*} id des Todo's
- */
- function getTodo(id) {
-  return globalTodoList.find(todo => todo.id === id)
-}
-
-/**
- * -> Todo-Eintrag hinzufügen
- * 
- * erwartet ein Objekt der Klasse 'Todo' -> siehe Funktion 'createTodo(<listName>, <description>)'
- */
-function addTodo(todo) {
-  // -todo der Liste hinzufuegen
-  globalTodoList.push(todo);
-
-  // im Storage speichern
-  addTodoListToLocalStorage(globalTodoList);
-}
-
-/**
- * -> Todo-Eintrag aendern
- * 
- * erwartet ein Objekt der Klasse 'Todo' (mit 'id')
- */
-function editTodo(todo) {
-  let idxTodo = -1
-
-  if(!todo.id) {
-    console.error('editTodo >> todo ohne ID!');
-    return // Abbruch
-  }
-
-  idxTodo = globalTodoList.indexOf(getTodo(todo.id))
-
-  // const todoStorage = globalTodoList.find((todoStorage, idx) => {
-  //   if(todoStorage.id === todo.id) {
-  //     idxTodo =  idx
-  //     return true
-  //   }
-  // })
-  console.log(`idxTodo: ${idxTodo}`)
-  globalTodoList[idxTodo] = todo // todo wird evtl nicht benoetigt, da gepointert 
-
-  // -todo-list im Storage speichern
-  addTodoListToLocalStorage(globalTodoList);
-}
-
-/**
- * ein Todo umbenennen
- * 
- * @param {*} id des Todo's
- */
- function renameTodo(id, description) {
-  const todo = getTodo(id)
-
-  // siehe Class Todo
-  todo.description = description 
+    // ###############################
+    // -> Haupt-TodoList-Array mit 'Todo'-Class-Objekten; wird in localStorage gespeichert
+    this.globalTodoList = this.getTodoListFromStorage()
   
-  // in localStorage speichern
-  addTodoListToLocalStorage(globalTodoList)
-}
+    // wenn leer -> standard-todos reinsetzen
+    if(this.globalTodoList.length === 0) {
+      this.addTodo(this.createTodo('haushalt', 'Wäsche'))
+      this.addTodo(this.createTodo('haushalt', 'Putzen'))
+      // -todo-list im Storage speichern
+      this.saveToLocalStorage(this.globalTodoList);
+    } 
+    // else {
+    //   // von Json to Todo-Class konvertieren
+    //   this.globalTodoList = this.globalTodoList.map(jsonTodo => Todo.from(jsonTodo))
+    // }
+    
+    console.table(this.globalTodoList);
+    // console.log(getTodo(6).dateCreation.toLocaleString())
+    
+    // ################## INIT ENDE
+    // ############################
+  }
 
-/**
- * ein Todo entfernen
- * 
- * @param {*} id des Todo's
- */
- function removeTodo(id) {
-  // filter-Array ohne dem Todo mit der uebergebenen 'id' 
-  globalTodoList = globalTodoList.filter(todo => todo.id !== id)
-
-  //    -> dieses Array dann in localStorage speichern
-  addTodoListToLocalStorage(globalTodoList)
-}
-
-
-/**
- * ein Todo 'erledigen'
- * 
- * @param {*} id des Todo's
- */
- function completeTodo(id) {
-  const todo = getTodo(id)
-
-  // siehe Class Todo
-  todo.completed() 
+  // #####################################
+  // LOCAL STORAGE FUNCTIONS
   
-  // in localStorage speichern
-  addTodoListToLocalStorage(globalTodoList)
-}
-
-
-/**
- * Todo kann Hauke oder Vita machen :)
- * ein 'erledigtes' Todo wieder zuruecksetzen
- * 
- * @param {*} id des Todo's
- */
- function uncompleteTodo(id) {
-   // todo tbf...
-}
-
-
-/**
- * Neues Todo-Objekt generieren -> wird in localStorage TodoListe (ein Array) eingefuegt
- * 
- * @param {*} listName 
- * @param {*} description 
- * @param {*} order 
- * @param {*} dateCreation 
- * @param {*} isCompleted 
- * @param {*} dateCompletion 
- * @param {*} isImportant 
- * @returns 
- */
-function createTodo(listName, description, order = 1, dateCreation = new Date(), isCompleted = false, dateCompletion = null, isImportant = false) {
-  const maxId = getMaxId(globalTodoList);
-
-  // todo max order noch setzen
-
-  const todo = new Todo(maxId, listName, description, order, dateCreation, isCompleted, dateCompletion, isImportant)
-
-  return todo
-}
-
-/**
- * Max-Id der Todo-List ermitteln (fuer neues Todo)
- * 
- * @returns maxId
- */
-function getMaxId(todoList) {
-  if(todoList.length === 0) {
-    return 1;
-  }
-
-  const maxId = Math.max(...todoList.map(todo => todo.id)) + 1
-  console.log(`maxId: ${maxId}`);
-  return maxId;
-}
-
-
-// #####################################
-// LIST FUNCTIONS (Hauptpart)
-
-/**
- * Erstellt eine neue Liste (z.B. Shopping)
- *  -> enstpricht einem Todo-Pseudo-Eintrag
- * 
- * @param {*} listName Name der Liste 
- * @returns ein Pseudo-Todo mit Bezeichnung 'Neuer Eintag'
- * 
- */
-function addList(listName) {
-  // falls Liste schon vorhanden 'null' returnen (kann auf falsy geprueft werden)
-  if(getList(listName).length > 0) {
-    console.error('Liste schon vorhanden!');
-    return false;
-  }
-
-  let pseudoTodo = createTodo(listName, 'Neuer Eintrag')
-  addTodo(pseudoTodo)
-
-  console.log(pseudoTodo); // Typ von Class Todo (mit allen Attributen)
-
-  return pseudoTodo
-}
-
-/**
- * ALLE Todo-Listen holen (->sidebar-list!)
- *    -> Anzahl an Todos pro Typ wird mitgeliefert
- * 
- * todo Sortierung?
- * 
- * return -> example
-      listName    count
-	    'homework'  1
-	    'shopping'	5
- */
-function getAllLists() {
-  // nur die Listen-(Namen) auflisten
-  const listNames = globalTodoList.map(todo => todo.listName)
-  // Duplicate entfernen
-  let uniqueListNames = [...new Set(listNames)]
-
-  // objekte mit Anzahl an Todos pro Liste(n-Name) zurueckgeben
-  uniqueListNames = uniqueListNames.map(listName => {
-    // Objekt kreieren -> Listenname + Anzahl an todo's pro Liste (siehe console.table-Output)
-    return {
-      listName: listName, 
-      count: listNames.reduce((acc, curr) => acc + (curr === listName ? 1 : 0), 0)
+  /**
+   * Daten aus der LocalStorage holen
+   * @returns todo-list
+   */
+  getTodoListFromStorage() {
+  
+    let todos = []
+  
+    if (window.localStorage.getItem(this.localStorageKey)) {
+      // ! Vorsicht: ist JSON-Data, muss noch in Todo-Objekte gewandelt werden (siehe Init unten)
+      todos = JSON.parse(window.localStorage.getItem(this.localStorageKey));
+      // von Json to Todo-Class konvertieren
+      todos = todos.map(jsonTodo => Todo.from(jsonTodo))
     }
-  })
+  
+    return todos
+  }
+  
+  /**
+   * Daten in die LocalStorage speichern
+   * @param {*} todoList 
+   */
+  saveToLocalStorage(todoList) {  
+    window.localStorage.setItem(this.localStorageKey, JSON.stringify(todoList));
+    console.table(todoList);
+  }
+  
+  // ! Vorsicht! todolist aus LocalStorage entfernen
+  removeTodoList = () => {
+    window.localStorage.removeItem(this.localStorageKey)
+    
+    this.globalTodoList.length = 0
+  }
 
-  console.table(uniqueListNames);
-
-  return uniqueListNames;
-}
-
-/**
- * EINE Liste mit allen Todo's abfragen
- * 
- * @param {*} listName Name der Todo-Liste * 
- * @return liefert alle Todo's der Liste
- */
-function getList(listName) {
-  console.log(`listName: ${listName}`);
-  const todosOfList = globalTodoList
-    .filter(todo => todo.listName === listName)
-    .sort((prev, curr) => {
-      // nach 'order' sortieren, wenn gleiche 'order' -> dann nach dateCreation sortieren
-      if(prev.order !== curr.order) {
-        prev.order - curr.order
-      } else {
-        prev.dateCreation - curr.dateCreation
+  clearLocalStorageATTENTION = () => window.localStorage.clear();
+  
+  
+  
+  // #####################################
+  // -TODO FUNCTIONS (Hauptpart)
+  
+  /**
+   * ein Todo holen 
+   * 
+   * returned ein Objekt der Klasse 'Todo'  
+   * 
+   * @param {*} id des Todo's
+   */
+   getTodo(id) {
+    return this.globalTodoList.find(todo => todo.id === id)
+  }
+  
+  /**
+   * -> Todo-Eintrag hinzufügen
+   * 
+   * erwartet ein Objekt der Klasse 'Todo' -> siehe Funktion 'createTodo(<listName>, <description>)'
+   */
+  addTodo(todo) {
+    // -todo der Liste hinzufuegen
+    this.globalTodoList.push(todo);
+  
+    // im Storage speichern
+    this.saveToLocalStorage(this.globalTodoList);
+  }
+  
+  /**
+   * -> Todo-Eintrag aendern
+   * 
+   * erwartet ein Objekt der Klasse 'Todo' (mit 'id')
+   */
+  editTodo(todo) {
+    let idxTodo = -1
+  
+    if(!todo.id) {
+      console.error('editTodo >> todo ohne ID!');
+      return // Abbruch
+    }
+  
+    idxTodo = this.globalTodoList.indexOf(getTodo(todo.id))
+  
+    // const todoStorage = this.globalTodoList.find((todoStorage, idx) => {
+    //   if(todoStorage.id === todo.id) {
+    //     idxTodo =  idx
+    //     return true
+    //   }
+    // })
+    console.log(`idxTodo: ${idxTodo}`)
+    this.globalTodoList[idxTodo] = todo // todo wird evtl nicht benoetigt, da gepointert 
+  
+    // -todo-list im Storage speichern
+    this.saveToLocalStorage(this.globalTodoList);
+  }
+  
+  /**
+   * ein Todo umbenennen
+   * 
+   * @param {*} id des Todo's
+   */
+   renameTodo(id, description) {
+    const todo = this.getTodo(id)
+    
+    if(!todo) {
+      // error -> nicht gefunden
+      console.error('Todo nicht gefunden!');
+      return false
+    }
+  
+    // siehe Class Todo
+    todo.description = description 
+    
+    // in localStorage speichern
+    this.saveToLocalStorage(this.globalTodoList)
+  }
+  
+  /**
+   * ein Todo entfernen
+   * 
+   * @param {*} id des Todo's
+   */
+   removeTodo(id) {
+    // filter-Array ohne dem Todo mit der uebergebenen 'id' 
+    this.globalTodoList = this.globalTodoList.filter(todo => todo.id !== id)
+  
+    //    -> dieses Array dann in localStorage speichern
+    this.saveToLocalStorage(this.globalTodoList)
+  }
+  
+  
+  /**
+   * ein Todo 'erledigen'
+   * 
+   * @param {*} id des Todo's
+   */
+   completeTodo(id) {
+    const todo = this.getTodo(id)
+    
+    if(!todo) {
+      // error -> nicht gefunden
+      console.error('Todo nicht gefunden!');
+      return false
+    }
+  
+    // siehe Class Todo
+    todo.completed() 
+    
+    // in localStorage speichern
+    this.saveToLocalStorage(this.globalTodoList)
+  }
+  
+  
+  /**
+   * Todo kann Hauke oder Vita machen :)
+   * ein 'erledigtes' Todo wieder zuruecksetzen
+   * 
+   * @param {*} id des Todo's
+   */
+   uncompleteTodo(id) {
+     // todo tbf...
+  }
+  
+  
+  /**
+   * Neues Todo-Objekt generieren -> wird in localStorage TodoListe (ein Array) eingefuegt
+   * 
+   * @param {*} listName 
+   * @param {*} description 
+   * @param {*} order 
+   * @param {*} dateCreation 
+   * @param {*} isCompleted 
+   * @param {*} dateCompletion 
+   * @param {*} isImportant 
+   * @returns 
+   */
+  createTodo(listName, description, order = 1, dateCreation = new Date(), isCompleted = false, dateCompletion = null, isImportant = false) {
+    const maxId = this.getMaxId(this.globalTodoList);
+  
+    // todo max order noch setzen
+  
+    const todo = new Todo(maxId, listName, description, order, dateCreation, isCompleted, dateCompletion, isImportant)
+  
+    return todo
+  }
+  
+  /**
+   * Max-Id der Todo-List ermitteln (fuer neues Todo)
+   * 
+   * @returns maxId
+   */
+  getMaxId(todoList) {
+    if(todoList.length === 0) {
+      return 1;
+    }
+  
+    const maxId = Math.max(...todoList.map(todo => todo.id)) + 1
+    console.log(`maxId: ${maxId}`);
+    return maxId;
+  }
+  
+  
+  // #####################################
+  // LIST FUNCTIONS (Hauptpart)
+  
+  /**
+   * Erstellt eine neue Liste (z.B. Shopping)
+   *  -> enstpricht einem Todo-Pseudo-Eintrag
+   * 
+   * @param {*} listName Name der Liste 
+   * @returns ein Pseudo-Todo mit Bezeichnung 'Neuer Eintag'
+   * 
+   */
+  addList(listName) {
+    // falls Liste schon vorhanden 'null' returnen (kann auf falsy geprueft werden)
+    if(this.getList(listName).length > 0) {
+      console.error('Liste schon vorhanden!');
+      return false;
+    }
+  
+    // einen Pseudo-Eintrag in die Todoliste machen
+    let pseudoTodo = this.createTodo(listName, 'Neuer Eintrag')
+    // in localStorage speichern
+    this.addTodo(pseudoTodo)
+  
+    console.log(pseudoTodo); // Typ von Class Todo (mit allen Attributen)
+  
+    return pseudoTodo
+  }
+  
+  /**
+   * ALLE Todo-Listen holen (->sidebar-list!)
+   *    -> Anzahl an Todos pro Typ wird mitgeliefert
+   * 
+   * todo Sortierung?
+   * 
+   * return -> example
+        listName    count
+        'homework'  1
+        'shopping'	5
+   */
+  getAllLists() {
+    // nur die Listen-(Namen) auflisten
+    const listNames = this.globalTodoList.map(todo => todo.listName)
+    // Duplicate entfernen
+    let uniqueListNames = [...new Set(listNames)]
+  
+    // objekte mit Anzahl an Todos pro Liste(n-Name) zurueckgeben
+    uniqueListNames = uniqueListNames.map(listName => {
+      // Objekt kreieren -> Listenname + Anzahl an todo's pro Liste (siehe console.table-Output)
+      return {
+        listName: listName, 
+        count: listNames.reduce((acc, curr) => acc + (curr === listName ? 1 : 0), 0)
       }
     })
-
-  console.table(todosOfList)
-
-  return todosOfList
+  
+    console.table(uniqueListNames);
+  
+    return uniqueListNames;
+  }
+  
+  /**
+   * EINE Liste mit allen Todo's abfragen
+   * 
+   * @param {*} listName Name der Todo-Liste * 
+   * @return liefert alle Todo's der Liste
+   */
+  getList(listName) {
+    console.log(`listName: ${listName}`);
+    const todosOfList = this.globalTodoList
+      .filter(todo => todo.listName === listName)
+      .sort((prev, curr) => {
+        // nach 'order' sortieren, wenn gleiche 'order' -> dann nach dateCreation sortieren
+        if(prev.order !== curr.order) {
+          prev.order - curr.order
+        } else {
+          prev.dateCreation - curr.dateCreation
+        }
+      })
+  
+    console.table(todosOfList)
+  
+    return todosOfList
+  }
 }
 
-// #############################
-// ################## INIT START
-
-// ! Todo-Array initialisieren aus LocalStorage
-globalTodoList = getTodoListFromStorage()
-
-// wenn leer -> standard-todos reinsetzen
-if(globalTodoList.length === 0) {
-  addTodo(createTodo('haushalt', 'Wäsche'))
-  addTodo(createTodo('haushalt', 'Putzen'))
-  // -todo-list im Storage speichern
-  addTodoListToLocalStorage(globalTodoList);
-} 
-// else {
-//   // von Json to Todo-Class konvertieren
-//   globalTodoList = globalTodoList.map(jsonTodo => Todo.from(jsonTodo))
-// }
-
-console.table(globalTodoList);
-// console.log(getTodo(6).dateCreation.toLocaleString())
-
-// ################## INIT ENDE
-// ############################
+const _api = new TodoListApi()
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -359,13 +373,13 @@ console.table(globalTodoList);
  * test funktion, um Todo hinzuzufuegen
  */
  function testAddRandomTodo() {
-  const todo = createTodo('shopping', 'Produkt ' + Math.floor(Math.random() * 1000))
+  const todo = _api.createTodo('shopping', 'Produkt ' + Math.floor(Math.random() * 1000))
   console.table(todo)
-  addTodo(todo);
+  _api.addTodo(todo);
 }
 
 function testGetTodoListFromStorage() {  
-  console.table(getTodoListFromStorage())
+  console.table(_api.getTodoListFromStorage())
 }
 
 // #############################
@@ -463,5 +477,3 @@ function testCreateTodo() {
   // zum Speichern in localStorge die 'addTodo'-Funktion aufrufen
   addTodo(newTodo)
 }
-
-

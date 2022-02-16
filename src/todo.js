@@ -1,7 +1,10 @@
-console.log("todo list!");
+console.log("todo.js");
 
 window.addEventListener("load", function (event) {
   console.log("seite fertig geladen");
+
+  // sidebar mit Listennamen aufbauen
+  showListList();
 
   // ... ab hier dann die Seite aufbauen mit den Daten aus der LocalStorage
   // getListTypes().forEach(list => {
@@ -12,16 +15,16 @@ window.addEventListener("load", function (event) {
   // })
 });
 
-if (globalTodoList.length < 3) {
-  addTodo(createTodo("haushalt", "Saugen"));
+if (_api.globalTodoList.length < 3) {
+  _api.addTodo(_api.createTodo("haushalt", "Saugen"));
 }
 
-console.log(globalTodoList);
+// console.log(globalTodoList);
 
 const buttonAddList = document.getElementById("buttonAddList");
 
 function addListToDom(event) {
-  const lists = getLists();
+  const lists = _api.getAllLists();
   console.log(lists);
   lists.forEach((list) => {
     console.log(list.type);
@@ -29,4 +32,4 @@ function addListToDom(event) {
   });
 }
 
-buttonAddList.addEventListener("click", addList);
+// buttonAddList.addEventListener("click", addListToDom);
