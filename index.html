@@ -13,35 +13,39 @@
     <title>WBS Todo List</title>
 </head>
 <body>
-    <header>
-    <h1>Welcome to Group 4 Todo List</h1>
-    <div id="lists">
-        
+    <header class="headerBigContainer">
+    <div class="headerContainer">
+    <h1 class="welcomeMessage">Welcome to Group 4 Todo List</h1>
     </div>
-    <div id="todos">
-    </header>
+  </header>
     <main>
-      <div class="flexContainer">
-        <div id="addNewlist">
+      <div class="flexContainerLists">
+        <div id="lists">
+          <div class="buttonNewList">
             <button id="buttonAddList" onclick="createToDoElement('list', '', true)"><i class="fas fa-plus-square"></i></button>
+          </div>
             <div class="ul">
                 <ul id="elementAddList">
-                  
+                  <li class="listToDo">
+                    <p contenteditable="true">My first list</p>
+                    <span>
+                      <button name="deleteTask"><i class="fas fa-trash"></i></button>
+                      <button name="editTask"><i class='fa fa-edit'></i></button>
+                    </span>
+                  </li>
                 </ul>
             </div>
         </div>
-        <div id="myList">
+        <div id="todos">
           <div id="addNewToDo">
             <input type="text" id="myInput" placeholder="My new to do element...">
             <button onclick="createToDoElement('todo')"><i class="fas fa-plus-square"></i></button>
           </div>
-          <div class="flexContainer2">
+          <div class="flexContainerToDo">
             <ul id="listElement">
               <li class="listToDo">
-                <input type="checkbox" name="doneCheckbox" id="doneCheckbox"/>
+                <input id="ToDo" type="checkbox" name="doneCheckbox" id="doneCheckbox"/>
                 <p contenteditable="true">My first task</p>
-                <!-- <p contenteditable="true">Test</p>
-                <p contenteditable="false">Test</p> -->
                 <span>
                   <button name="deleteTask"><i class="fas fa-trash"></i></button>
                   <button name="editTask"><i class='fa fa-edit'></i></button>
