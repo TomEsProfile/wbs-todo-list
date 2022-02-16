@@ -35,6 +35,11 @@
             <input type="text" id="myInput" placeholder="My new to do element...">
             <button onclick="createToDoElement('todo')"><i class="fas fa-plus-square"></i></button>
           </div>
+          <form action="#" onsubmit="formSubmitCreateTodo(event)">
+            <input type="hidden" name="listName" id="inputNewTodoListName">
+            <input type="text" name="description" id="inputNewTodoText" placeholder="My new to do element...">
+            <button type="submit"><i class="fas fa-plus-square"></i></button>
+          </form>
           <div class="flexContainer2">
             <ul id="listElement">
               <li class="listToDo">
@@ -80,7 +85,7 @@
     </section>
 
     <script src="./src/localStorageApi.js"></script>
-    <script src="./src/todo.js"></script>
     <script src="./src/tododom.js"></script>
+    <script src="./src/todo.js"></script>
 </body>
 </html>
