@@ -58,6 +58,20 @@ class Todo {
 }
 ```
 
-> Beispiel Implementiereungen
-...
+### Beispiel Implementiereungen
+
+> alle Liste holen und ausgeben
+```
+function testGetAllLists() {
+
+  getAllLists().forEach(list => {
+    console.log(`listName: ${list.listName}`);
+    console.log(`anzahl todos: ${list.count}`);
+
+    // your code: here for example build  html-code to add to your nav-bar
+    let navListElement = createNavListElement(list.listName, list.count)
+    document.getElementById('navbar').appendChild(navListElement)
+  })
+}
+```
 
