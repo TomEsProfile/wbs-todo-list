@@ -158,6 +158,12 @@ function editTodo(todo) {
  */
  function renameTodo(id, description) {
   const todo = getTodo(id)
+  
+  if(!todo) {
+    // error -> nicht gefunden
+    console.error('Todo nicht gefunden!');
+    return false
+  }
 
   // siehe Class Todo
   todo.description = description 
@@ -187,6 +193,12 @@ function editTodo(todo) {
  */
  function completeTodo(id) {
   const todo = getTodo(id)
+  
+  if(!todo) {
+    // error -> nicht gefunden
+    console.error('Todo nicht gefunden!');
+    return false
+  }
 
   // siehe Class Todo
   todo.completed() 
