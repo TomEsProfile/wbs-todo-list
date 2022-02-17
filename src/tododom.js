@@ -21,6 +21,18 @@ function createToDoElement(typeofElement, data, isCreated = false) {
         editElement(data);
       };
 
+      let formToDo = document.createElement("form");
+      let input = document.createElement("input");
+      input.type = "hidden";
+      input.id = "todoDescription" + data.id;
+      input.value = data.description;
+      formToDo.action = "#";
+      formToDo.onsubmit = function (event) {
+        console.log(event.target)
+      }
+
+      todo.appendChild(formToDo);
+      formToDo.appendChild(input);
       todo.appendChild(trashcan);
       todo.appendChild(pen);
 
@@ -111,6 +123,11 @@ function formSubmitCreateTodo(event) {
 
   const listName = document.getElementById("inputNewTodoListName").value;
   const description = document.getElementById("inputNewTodoText").value;
+  if (description.trim() === "") {
+    alert("Please type some text");
+
+  }
+  console.log(description.trim());
 
   console.log(`${listName} - ${description}`);
 
@@ -135,6 +152,8 @@ function deleteElement(todoElement) {
 
 function editElement(todoElement) {
   console.log("editElement >> id: " + todoElement.id);
+  const edit = document.getElementById("todoDescription" + todoElement.id);
+  console.log(edit.value);
 }
 
 function clearListBar() {
