@@ -127,14 +127,14 @@ function addNewList(listName) {
 }
 
 function deleteElement(todoElement) {
-  console.log("test" + todoElement.id);
+  console.log("deleteElement >> id: " + todoElement.id);
   const listName = todoElement.listName
   _api.removeTodo(todoElement.id)
   showList(listName)
 }
 
 function editElement(todoElement) {
-  console.log("test2" + todoElement.id);
+  console.log("editElement >> id: " + todoElement.id);
 }
 
 function clearListBar() {
