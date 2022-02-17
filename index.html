@@ -22,6 +22,7 @@
       <div class="flexContainerLists">
         <div id="lists">
           <div class="buttonNewList">
+            <div class="labelNewList">Neue Liste</div>
             <button id="buttonAddList" onclick="createToDoElement('list', '', true)"><i class="fas fa-plus-square"></i></button>
           </div>
             <div class="ul">
@@ -38,14 +39,14 @@
         </div>
         <div id="todos">
           <div id="addNewToDo">
-            <input type="text" id="myInput" placeholder="My new to do element...">
-            <button onclick="createToDoElement('todo')"><i class="fas fa-plus-square"></i></button>
+            <form id="formNewTodo" action="#" onsubmit="formSubmitCreateTodo(event)">
+              <input type="hidden" name="listName" id="inputNewTodoListName" id="inputNewTodoListName">
+              <input type="text" name="description" id="inputNewTodoText" placeholder="Add a Todo here... " autofocus>
+              <button type="submit"><i class="fas fa-plus-square"></i></button>
+            </form>
+            <!-- <input type="text" id="myInput" placeholder="My new to do element...">
+            <button onclick="createToDoElement('todo')"><i class="fas fa-plus-square"></i></button> -->
           </div>
-          <form action="#" onsubmit="formSubmitCreateTodo(event)">
-            <input type="hidden" name="listName" id="inputNewTodoListName">
-            <input type="text" name="description" id="inputNewTodoText" placeholder="My new to do element...">
-            <button type="submit"><i class="fas fa-plus-square"></i></button>
-          </form>
           <div class="flexContainerToDo">
             <ul id="listElement">
               <li class="listToDo">
@@ -58,7 +59,7 @@
               </li>
               <li>Some text...</li>
             </ul>
-            <div id="operationsOnListElements">
+            <div id="operationsOnListElements" style="display: none">
               <button><i class="fa-solid fa-check"></i></button>
               <button><i class='fa fa-edit'></i></button>
               <button><i class="fas fa-trash"></i></button>

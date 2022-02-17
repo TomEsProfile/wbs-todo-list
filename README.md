@@ -4,6 +4,18 @@ wbs week 3+4 Todo List
 ## kleine Beschreibung der Todo-List Api
 [localStorageApi.js](src/localStorageApi.js)
 
+### Api-Objekt -> Klassen-Objekt zum Aufrufen aller Funktionen
+```javascript
+// das globale TodoList-Array wird mit diesen Todo-Objekten 'gefuellt'
+class TodoListApi { ... }
+
+// Instanz erstellen
+const _api = new TodoListApi()
+
+// Funktionen aufrufen
+_api.getList('shopping')
+```
+
 ### Übersicht der Api-Funktionen
 
 > Listen-Funktionen
@@ -64,7 +76,7 @@ class Todo {
 ```javascript
 function testGetAllLists() {
 
-  getAllLists().forEach(list => {
+  _api.getAllLists().forEach(list => {
     // zwei Angaben
     console.log(`listName: ${list.listName}`);
     console.log(`anzahl todos: ${list.count}`);
@@ -80,7 +92,7 @@ function testGetAllLists() {
 ```javascript
 function testGetListTodos() {
   // Liste 'shopping' holen
-  const todos = getList('shopping')
+  const todos = _api.getList('shopping')
   
   // ueber todos iterieren   
   todos.forEach(todo => {
@@ -99,7 +111,7 @@ function testGetListTodos() {
 ```javascript
 function testAddNewList() {
   
-  const todo = addList('shopping')
+  const todo = _api.addList('shopping')
 
   if(!todo) {
     // error -> Listenname schon vergeben
@@ -118,7 +130,7 @@ function testGetTodo() {
   
   const todoId = 7
   // wird ueber id geholt
-  const todo = getTodo(todoId)
+  const todo = _api.getTodo(todoId)
 
   if(!todo) {
     // error -> nicht gefunden
@@ -139,18 +151,18 @@ function testCreateTodo() {
   const listName = 'shopping'
   const description = 'Meine Todo-Beschreibung'
 
-  let newTodo = createTodo(listName, description)
+  let newTodo = _api.createTodo(listName, description)
 
   // oder aber auch mit zusätzlichen Parametern, z.B. Reihenfolge
   const order = 3 
-  let newTodo = createTodo(listName, description, order)
+  let newTodo = _api.createTodo(listName, description, order)
 
   console.log(`\n ---Todo >> id: ${newTodo.id}`);
   console.log(`beschreibung: ${newTodo.description}`);
   console.log(`erstellt am: ${newTodo.dateCreation.toLocaleString()}`);   
 
   // zum Speichern in localStorge die 'addTodo'-Funktion aufrufen
-  addTodo(newTodo)
+  _api.addTodo(newTodo)
 }
 ```
 
@@ -162,15 +174,15 @@ function testEditTodo() {
   const todoId = 7
 
   // Beispiel fuer Umbenennen
-  renameTodo(todoId, 'new Todo-Description')
+  _api.renameTodo(todoId, 'new Todo-Description')
 
   // Beispiel fuer Löschen
-  removeTodo(todoId)
+  _api.removeTodo(todoId)
 
   // Beispiel fuer Erledigen
-  completeTodo(todoId)
+  _api.completeTodo(todoId)
 
   // Beispiel fuer Zurücksetzen 
-  uncompleteTodo(todoId)
+  _api.uncompleteTodo(todoId)
 }
 ```

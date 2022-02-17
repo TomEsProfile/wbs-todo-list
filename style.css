@@ -2,6 +2,7 @@ body {
 	margin: 0;
 	padding: 0;
 	font-family: 'Poppins', sans-serif;
+    background: #1f8dd6;
 }
 
 html {
@@ -12,6 +13,11 @@ html {
 * {
     box-sizing: border-box;
   }
+
+main {
+    max-width: 80rem;
+    margin: 0 auto;
+}
 
 .headerBigContainer {
     /*border: 5px solid red;*/
@@ -56,7 +62,9 @@ html {
 #lists {
     /*border: 5px solid red;*/
     margin: 0;
-	width: 30%;
+	/* width: 30%; */
+    flex-grow: 1;
+    max-width: 20rem;
 }
 
 .buttonNewList {
@@ -64,11 +72,16 @@ html {
     justify-content: right;
 }
 
+.labelNewList {
+    align-self: center;
+    padding: 10px;
+}
+
 button {
     border: none;
     background-color: white;
     color: #1f8dd6;
-    padding: 1rem 1.2rem;
+    padding: .5rem .75rem;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -87,7 +100,7 @@ button {
  }
 
 li {
-    cursor: pointer;
+    /* cursor: pointer; */
     padding: 0.8rem;
     list-style-type: none;
     background: #1f8dd6;
@@ -96,7 +109,7 @@ li {
     transition: 0.3s;
     list-style-position: inside;
 }
-li:hover {
+ul li:hover {
     background: white;
     color: #1f8dd6;
   }
@@ -104,35 +117,55 @@ li:hover {
 ul li:nth-child(odd) {
     background: #44A4E4;
   }
+  
+
+ul li:nth-child(odd):hover {
+    background: white;
+  }
 
 #todos {
     /*border: 5px solid blue;*/
     margin: 0;
-	width: 70%;
+	/* width: 70%; */    
+    flex-grow: 4;
 }
 
 #addNewToDo {
-    border: 5px solid coral;
+    /* border: 5px solid coral; */
     width: 80%;
     margin-left: 1rem;
     display: flex;
     justify-content: space-between;
 }
 
-#myInput {
-    margin-left: 0;
-    padding: 0.8rem 12rem;
+#formNewTodo {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;    
+}
+
+#inputNewTodoText, #inputNewList {
+    font-size: 1.5rem;
+    text-indent: 10px;
+    padding: 5px 0;
+    margin-right: 10px;
+    border-radius: 5px;
+    border: 1px solid gray;
+}
+
+#inputNewList {
+    font-size: 1.1rem;
 }
 
 .flexContainerToDo {
-    border: 5px solid green;
+    /* border: 5px solid green; */
     display: flex;
-    margin: 0 auto;
-    
-    }
+    margin: 1rem auto;
+    padding-left: 3rem;
+}
 
 #listElement {
-    border: 5px solid black;
+    /* border: 5px solid black; */
     margin: 0px;
     padding-left: 0;
 	width: 80%;
@@ -155,4 +188,24 @@ ul li:nth-child(odd) {
     display: inline-block;
     width: 30%;
     text-align: start;
+}
+
+.div-todo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.todo-label {
+    flex-grow: 1;
+}
+
+.todo-label-completed {
+    text-decoration: line-through;
+}
+
+.todo-completion-date {
+    font-size: 7pt;
+    vertical-align: sub;
+    margin-right: 1rem;
 }

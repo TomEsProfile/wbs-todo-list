@@ -44,6 +44,8 @@ console.log("local storage api");
   // todo uncompleted-function erstellen
   uncompleted() {
     // ... code
+    this.isCompleted = false
+    this.dateCompletion = null
   }
 }
   
@@ -237,6 +239,19 @@ class TodoListApi {
    */
    uncompleteTodo(id) {
      // todo tbf...
+    const todo = this.getTodo(id)
+    
+    if(!todo) {
+      // error -> nicht gefunden
+      console.error('Todo nicht gefunden!');
+      return false
+    }
+  
+    // siehe Class Todo
+    todo.uncompleted() 
+    
+    // in localStorage speichern
+    this.saveToLocalStorage(this.globalTodoList)
   }
   
   
@@ -293,6 +308,7 @@ class TodoListApi {
     // falls Liste schon vorhanden 'null' returnen (kann auf falsy geprueft werden)
     if(this.getList(listName).length > 0) {
       console.error('Liste schon vorhanden!');
+      alert('Liste schon vorhanden!')
       return false;
     }
   
@@ -345,8 +361,9 @@ class TodoListApi {
    */
   getList(listName) {
     console.log(`listName: ${listName}`);
-    const todosOfList = this.globalTodoList
-      .filter(todo => todo.listName === listName)
+
+    const getTodosOfList = isCompleted => this.globalTodoList
+      .filter(todo => todo.listName === listName && todo.isCompleted === isCompleted)
       .sort((prev, curr) => {
         // nach 'order' sortieren, wenn gleiche 'order' -> dann nach dateCreation sortieren
         if(prev.order !== curr.order) {
@@ -355,6 +372,9 @@ class TodoListApi {
           prev.dateCreation - curr.dateCreation
         }
       })
+
+    // erst unfertige Todo's, dann fertige
+    const todosOfList = getTodosOfList(false).concat(getTodosOfList(true))
   
     console.table(todosOfList)
   
@@ -362,6 +382,11 @@ class TodoListApi {
   }
 }
 
+/**
+ * Instanz der Api -> mit diesem alle Funktionen aufrufen!
+ * 
+ *  z.B. _api.getList('shopping')
+ */
 const _api = new TodoListApi()
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -390,7 +415,7 @@ function testGetTodoListFromStorage() {
  */
 function testGetAllLists() {
 
-  getAllLists().forEach(list => {
+  _api.getAllLists().forEach(list => {
     console.log(`listName: ${list.listName}`);
     console.log(`anzahl todos: ${list.count}`);
 
@@ -406,7 +431,7 @@ function testGetAllLists() {
  */
 function testGetListTodos() {
   // Liste 'shopping' holen
-  const todos = getList('shopping')
+  const todos = _api.getList('shopping')
   
   // ueber todos iterieren   
   todos.forEach(todo => {
@@ -425,7 +450,7 @@ function testGetListTodos() {
  */
 function testAddNewList() {
   
-  const todo = addList('shopping')
+  const todo = _api.addList('shopping')
 
   if(!todo) {
     // error -> Listenname schon vergeben
@@ -443,7 +468,7 @@ function testGetTodo() {
   
   const todoId = 7
   // wird ueber id geholt
-  const todo = getTodo(todoId)
+  const todo = _api.getTodo(todoId)
 
   if(!todo) {
     // error -> nicht gefunden
@@ -468,12 +493,12 @@ function testCreateTodo() {
 
   // oder aber auch mit zusätzlichen Parametern, z.B. Reihenfolge
   const order = 3 
-  let newTodo = createTodo(listName, description, order)
+  let newTodo = _api.createTodo(listName, description, order)
 
   console.log(`\n ---Todo >> id: ${newTodo.id}`);
   console.log(`beschreibung: ${newTodo.description}`);
   console.log(`erstellt am: ${newTodo.dateCreation.toLocaleString()}`);   
 
   // zum Speichern in localStorge die 'addTodo'-Funktion aufrufen
-  addTodo(newTodo)
+  _api.addTodo(newTodo)
 }

@@ -7,7 +7,23 @@ function createToDoElement(typeofElement, data, isCreated = false) {
   switch (typeofElement) {
     case "todo":
       let todo = document.createElement("div");
-      todo.innerHTML = data.description;
+      
+      let todoCheckbox = document.createElement("input");
+      todoCheckbox.type = 'checkbox'
+      if(data.isCompleted) {
+        todoCheckbox.checked = true
+      }
+      todoCheckbox.onchange = function () {
+        completeTodo(data);
+      };
+
+      let todoLabel = document.createElement("div");
+      todoLabel.innerHTML = data.description;
+      todoLabel.classList.add("todo-label");
+      if(data.isCompleted) {
+        todoCheckbox.checked = true
+        todoLabel.classList.add("todo-label-completed");
+      }
 
       let trashcan = document.createElement("button");
       trashcan.innerHTML = '<i class="fas fa-trash">';
@@ -20,25 +36,40 @@ function createToDoElement(typeofElement, data, isCreated = false) {
       pen.onclick = function () {
         editElement(data);
       };
+      
+      let todoCompletionDate = document.createElement("div");
+      if(data.isCompleted) {
+        todoCompletionDate.innerHTML = data.dateCompletion.toLocaleString();
+        todoCompletionDate.classList.add("todo-completion-date");
+      }
 
+      todo.appendChild(todoCheckbox);
+      todo.appendChild(todoLabel);
+      if(data.isCompleted) {
+        todo.appendChild(todoCompletionDate);
+      }
       todo.appendChild(trashcan);
       todo.appendChild(pen);
 
       todo.id = "todo" + count;
       count++;
 
-      todo.style = "height: 150px; background-color: coral;";
-      todo.classList.add("class");
+      // todo.style = "height: 150px; background-color: coral;";
+      todo.classList.add("div-todo");
 
       todos.appendChild(todo);
       break;
     case "list":
       let list = document.createElement("li");
       let listButton = document.createElement("button");
+      listButton.style = "width: 100%; min-width: 6rem"
 
       if (isCreated === true) {
+        document.getElementById("inputNewTodoListName").value = ''
         let listInput = document.createElement("input");
         listInput.type = "text";
+        listInput.placeholder = 'Neuer Listenname'
+        listInput.id = 'inputNewList'
         listButton.appendChild(listInput);
         listInput.addEventListener("keydown", function (event) {
           if (event.key === "Enter") {
@@ -51,7 +82,7 @@ function createToDoElement(typeofElement, data, isCreated = false) {
         clearListArea();
 
       } else {
-        listButton.innerHTML = `${data.listName} (${data.count})`;
+        listButton.innerHTML = `<span>${data.listName}</span><span style="font-size: 7pt; margin-left: 5px"<sub><em>(${data.count})</em></sub></span>`;
       }
       listButton.onclick = function () {
         showList(data.listName);
@@ -114,10 +145,14 @@ function formSubmitCreateTodo(event) {
 
   console.log(`${listName} - ${description}`);
 
-  const todo = createTodo(listName, description);
-  addTodo(todo);
+  if(!listName || listName === 'undefined') {
+    return;
+  }
+  const todo = _api.createTodo(listName, description);
+  _api.addTodo(todo);
 
   showListList(listName);
+  document.getElementById("inputNewTodoText").value = ''
 }
 
 /* bitte zu Ende schreiben*/
@@ -127,14 +162,26 @@ function addNewList(listName) {
 }
 
 function deleteElement(todoElement) {
-  console.log("test" + todoElement.id);
+  console.log("deleteElement >> id: " + todoElement.id);
   const listName = todoElement.listName
   _api.removeTodo(todoElement.id)
   showList(listName)
 }
 
+function completeTodo(todoElement) {
+  console.log("completeTodo >> id: " + todoElement.id);
+  const listName = todoElement.listName
+  
+  if(todoElement.isCompleted) {
+    _api.uncompleteTodo(todoElement.id)
+  } else {
+    _api.completeTodo(todoElement.id)
+  }
+  showList(listName)
+}
+
 function editElement(todoElement) {
-  console.log("test2" + todoElement.id);
+  console.log("editElement >> id: " + todoElement.id);
 }
 
 function clearListBar() {
