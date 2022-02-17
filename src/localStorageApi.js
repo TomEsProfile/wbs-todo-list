@@ -44,6 +44,8 @@ console.log("local storage api");
   // todo uncompleted-function erstellen
   uncompleted() {
     // ... code
+    this.isCompleted = false
+    this.dateCompletion = null
   }
 }
   
@@ -237,6 +239,19 @@ class TodoListApi {
    */
    uncompleteTodo(id) {
      // todo tbf...
+    const todo = this.getTodo(id)
+    
+    if(!todo) {
+      // error -> nicht gefunden
+      console.error('Todo nicht gefunden!');
+      return false
+    }
+  
+    // siehe Class Todo
+    todo.uncompleted() 
+    
+    // in localStorage speichern
+    this.saveToLocalStorage(this.globalTodoList)
   }
   
   
@@ -346,8 +361,9 @@ class TodoListApi {
    */
   getList(listName) {
     console.log(`listName: ${listName}`);
-    const todosOfList = this.globalTodoList
-      .filter(todo => todo.listName === listName)
+
+    const getTodosOfList = isCompleted => this.globalTodoList
+      .filter(todo => todo.listName === listName && todo.isCompleted === isCompleted)
       .sort((prev, curr) => {
         // nach 'order' sortieren, wenn gleiche 'order' -> dann nach dateCreation sortieren
         if(prev.order !== curr.order) {
@@ -356,6 +372,9 @@ class TodoListApi {
           prev.dateCreation - curr.dateCreation
         }
       })
+
+    // erst unfertige Todo's, dann fertige
+    const todosOfList = getTodosOfList(false).concat(getTodosOfList(true))
   
     console.table(todosOfList)
   
