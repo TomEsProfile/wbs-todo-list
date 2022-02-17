@@ -362,6 +362,11 @@ class TodoListApi {
   }
 }
 
+/**
+ * Instanz der Api -> mit diesem alle Funktionen aufrufen!
+ * 
+ *  z.B. _api.getList('shopping')
+ */
 const _api = new TodoListApi()
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -390,7 +395,7 @@ function testGetTodoListFromStorage() {
  */
 function testGetAllLists() {
 
-  getAllLists().forEach(list => {
+  _api.getAllLists().forEach(list => {
     console.log(`listName: ${list.listName}`);
     console.log(`anzahl todos: ${list.count}`);
 
@@ -406,7 +411,7 @@ function testGetAllLists() {
  */
 function testGetListTodos() {
   // Liste 'shopping' holen
-  const todos = getList('shopping')
+  const todos = _api.getList('shopping')
   
   // ueber todos iterieren   
   todos.forEach(todo => {
@@ -425,7 +430,7 @@ function testGetListTodos() {
  */
 function testAddNewList() {
   
-  const todo = addList('shopping')
+  const todo = _api.addList('shopping')
 
   if(!todo) {
     // error -> Listenname schon vergeben
@@ -443,7 +448,7 @@ function testGetTodo() {
   
   const todoId = 7
   // wird ueber id geholt
-  const todo = getTodo(todoId)
+  const todo = _api.getTodo(todoId)
 
   if(!todo) {
     // error -> nicht gefunden
@@ -468,12 +473,12 @@ function testCreateTodo() {
 
   // oder aber auch mit zusätzlichen Parametern, z.B. Reihenfolge
   const order = 3 
-  let newTodo = createTodo(listName, description, order)
+  let newTodo = _api.createTodo(listName, description, order)
 
   console.log(`\n ---Todo >> id: ${newTodo.id}`);
   console.log(`beschreibung: ${newTodo.description}`);
   console.log(`erstellt am: ${newTodo.dateCreation.toLocaleString()}`);   
 
   // zum Speichern in localStorge die 'addTodo'-Funktion aufrufen
-  addTodo(newTodo)
+  _api.addTodo(newTodo)
 }
