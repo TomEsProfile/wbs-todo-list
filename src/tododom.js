@@ -27,8 +27,8 @@ function createToDoElement(typeofElement, data, isCreated = false) {
       todo.id = "todo" + count;
       count++;
 
-      todo.style = "height: 150px; background-color: coral;";
-      todo.classList.add("class");
+      // todo.style = "height: 150px; background-color: coral;";
+      todo.classList.add("div-todo");
 
       todos.appendChild(todo);
       break;
@@ -114,8 +114,8 @@ function formSubmitCreateTodo(event) {
 
   console.log(`${listName} - ${description}`);
 
-  const todo = createTodo(listName, description);
-  addTodo(todo);
+  const todo = _api.createTodo(listName, description);
+  _api.addTodo(todo);
 
   showListList(listName);
 }
