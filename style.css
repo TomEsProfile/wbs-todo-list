@@ -57,6 +57,12 @@ main, footer {
     background-color: #1f8dd6;
 }
 
+@media only screen and (max-width: 700px) {    
+    .welcomeMessage {
+        font-size: 1.7rem;
+    }    
+}
+
 .flexContainerLists {
     /*border: 5px solid green;*/
     border-top: 0.5px solid white;
@@ -211,8 +217,14 @@ ul li:nth-child(odd):hover {
     margin-bottom: 1rem;
 }
 
+.todo-completed-first {
+    padding-top: 1rem;
+    border-top: 1px dotted lightgray;
+}
+
 .todo-label {
     flex-grow: 1;
+    margin-left: 10px;
 }
 
 .todo-label-completed {
@@ -225,4 +237,8 @@ ul li:nth-child(odd):hover {
     vertical-align: sub;
     margin-right: 1rem;
     color: lightblue;
+}
+
+input[type=checkbox] {
+    transform: scale(1.5);
 }
