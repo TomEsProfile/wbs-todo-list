@@ -12,9 +12,15 @@ html {
 
 * {
     box-sizing: border-box;
-  }
+}
 
-main {
+
+/* Styling Lydia Start */
+.flex-wrapper {
+    min-height: 30rem;
+}
+
+main, footer {
     max-width: 80rem;
     margin: 0 auto;
 }
@@ -90,6 +96,15 @@ button {
     cursor: pointer;
   }
 
+.list-button {
+    width: 100%; 
+    min-width: 6rem
+}
+
+.list-button-active {
+    background-color: lightpink;
+}
+
  .ul {
      border-top: 0.5px solid white;
  }
@@ -154,7 +169,7 @@ ul li:nth-child(odd):hover {
 }
 
 #inputNewList {
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 .flexContainerToDo {
@@ -202,10 +217,12 @@ ul li:nth-child(odd):hover {
 
 .todo-label-completed {
     text-decoration: line-through;
+    color: lightblue;
 }
 
 .todo-completion-date {
     font-size: 7pt;
     vertical-align: sub;
     margin-right: 1rem;
+    color: lightblue;
 }

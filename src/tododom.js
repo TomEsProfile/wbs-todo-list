@@ -62,14 +62,16 @@ function createToDoElement(typeofElement, data, isCreated = false) {
     case "list":
       let list = document.createElement("li");
       let listButton = document.createElement("button");
-      listButton.style = "width: 100%; min-width: 6rem"
-
+      listButton.classList.add("list-button");
+      listButton.id = "btn_" + data.listName
+      
       if (isCreated === true) {
         document.getElementById("inputNewTodoListName").value = ''
         let listInput = document.createElement("input");
         listInput.type = "text";
         listInput.placeholder = 'Neuer Listenname'
         listInput.id = 'inputNewList'
+        listButton.classList.add("list-button-active");
         listButton.appendChild(listInput);
         listInput.addEventListener("keydown", function (event) {
           if (event.key === "Enter") {
@@ -79,7 +81,8 @@ function createToDoElement(typeofElement, data, isCreated = false) {
             showListList(listName);
           }
         });
-        clearListArea();
+        // clearListArea();
+        showList('')
 
       } else {
         listButton.innerHTML = `<span>${data.listName}</span><span style="font-size: 7pt; margin-left: 5px"<sub><em>(${data.count})</em></sub></span>`;
@@ -128,6 +131,10 @@ function showListList(listName) {
 function showList(listName) {
   clearListArea();
   document.getElementById("inputNewTodoListName").value = listName;
+
+  // list button hervorheben
+  document.querySelectorAll('.list-button').forEach(listbutton => listbutton.classList.remove('list-button-active'))
+  document.getElementById("btn_" + listName)?.classList.add("list-button-active");
 
   var allELements = _api.getList(listName);
   allELements.forEach((element) => {
