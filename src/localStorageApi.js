@@ -367,9 +367,11 @@ class TodoListApi {
       .sort((prev, curr) => {
         // nach 'order' sortieren, wenn gleiche 'order' -> dann nach dateCreation sortieren
         if(prev.order !== curr.order) {
-          prev.order - curr.order
+          return prev.order - curr.order
         } else {
-          prev.dateCreation - curr.dateCreation
+          // console.log(`isCompleted: ${isCompleted}`);
+          if(!isCompleted) return prev.dateCreation - curr.dateCreation
+          else return curr.dateCompletion - prev.dateCompletion
         }
       })
 

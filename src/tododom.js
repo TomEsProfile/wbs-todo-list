@@ -24,6 +24,10 @@ function createToDoElement(typeofElement, data, isCreated = false) {
         todoCheckbox.checked = true
         todoLabel.classList.add("todo-label-completed");
       }
+      if(data.firstCompleted) {
+        todo.classList.add("todo-completed-first");
+        data.firstCompleted = false // wieder zuruecksetzen
+      }
 
       let trashcan = document.createElement("button");
       trashcan.innerHTML = '<i class="fas fa-trash">';
@@ -65,9 +69,10 @@ function createToDoElement(typeofElement, data, isCreated = false) {
       listButton.classList.add("list-button");
       listButton.id = "btn_" + data.listName
       
+      let listInput = document.createElement("input");
       if (isCreated === true) {
         document.getElementById("inputNewTodoListName").value = ''
-        let listInput = document.createElement("input");
+        
         listInput.type = "text";
         listInput.placeholder = 'Neuer Listenname'
         listInput.id = 'inputNewList'
@@ -108,6 +113,7 @@ function createToDoElement(typeofElement, data, isCreated = false) {
       list.classList.add("listToDo");
 
       lists.appendChild(list);
+      listInput.focus()
       break;
   }
 }
@@ -117,7 +123,7 @@ function showListList(listName) {
   var allLists = _api.getAllLists();
   allLists.forEach((element) => {
     createToDoElement("list", element);
-    console.log({ element });
+    // console.log({ element });
   });
 
   if (!listName && allLists.length) {
@@ -137,9 +143,14 @@ function showList(listName) {
   document.getElementById("btn_" + listName)?.classList.add("list-button-active");
 
   var allELements = _api.getList(listName);
+  let firstTodoCompleted = false;
   allELements.forEach((element) => {
+    if(!firstTodoCompleted && element.isCompleted) {
+      firstTodoCompleted = true
+      element.firstCompleted = true // pseudo-attribut
+    }
     createToDoElement("todo", element);
-    console.log({ element });
+    // console.log({ element });
   });
 }
 
@@ -165,14 +176,24 @@ function formSubmitCreateTodo(event) {
 /* bitte zu Ende schreiben*/
 function addNewList(listName) {
   console.log(`listName: ${listName}`);
-  _api.addList(listName);
+  if(listName.trim().length > 0) _api.addList(listName);
+  else showListList()
 }
 
 function deleteElement(todoElement) {
   console.log("deleteElement >> id: " + todoElement.id);
   const listName = todoElement.listName
-  _api.removeTodo(todoElement.id)
-  showList(listName)
+
+  // falls letzer Eintrag -> fragen, ob die Liste geloescht werden soll
+  if(_api.getList(listName).length === 1) {
+    if(confirm(`Wollen Sie wirklich die Liste "${listName}" löschen?`)){
+      _api.removeTodo(todoElement.id)
+      showListList()
+    }
+  } else {
+    _api.removeTodo(todoElement.id)
+    showList(listName)
+  }
 }
 
 function completeTodo(todoElement) {
