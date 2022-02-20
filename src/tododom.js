@@ -93,7 +93,7 @@ function createToDoElement(typeofElement, data, isCreated = false) {
         listButton.innerHTML = `<span>${data.listName}</span><span style="font-size: 7pt; margin-left: 5px"<sub><em>(${data.count})</em></sub></span>`;
       }
       listButton.onclick = function () {
-        showList(data.listName);
+        showList(data.listName, true);
       };
       list.appendChild(listButton);
 
@@ -118,7 +118,7 @@ function createToDoElement(typeofElement, data, isCreated = false) {
   }
 }
 
-function showListList(listName) {
+function showListList(listName, fadeIn = false) {
   clearListBar();
   var allLists = _api.getAllLists();
   allLists.forEach((element) => {
@@ -126,15 +126,16 @@ function showListList(listName) {
     // console.log({ element });
   });
 
+  // falls keine Liste angegeben -> die erste anzeigen
   if (!listName && allLists.length) {
     listName = allLists[0].listName;
   }
 
   console.log(`listName: ${listName}`);
-  showList(listName);
+  showList(listName, fadeIn);
 }
 
-function showList(listName) {
+function showList(listName, fadeIn = false) {
   clearListArea();
   document.getElementById("inputNewTodoListName").value = listName;
 
@@ -152,6 +153,9 @@ function showList(listName) {
     createToDoElement("todo", element);
     // console.log({ element });
   });
+
+  if(fadeIn) delayAnimationTodos()
+
 }
 
 function formSubmitCreateTodo(event) {
@@ -225,4 +229,16 @@ function clearListArea() {
   while (col_wrapper.firstChild) {
     col_wrapper.removeChild(col_wrapper.lastChild);
   }
+}
+
+
+
+// Delay intro animations (von Olin aus 'allgemein'-channel!)
+const delayAnimationTodos = () => {
+  document.querySelectorAll('.div-todo').forEach((el, index) => {
+    el.classList.add('div-fade-in');
+    setTimeout(() => {
+      el.classList.add('fade-in');
+    }, 100 * index);
+  });
 }

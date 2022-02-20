@@ -6,7 +6,7 @@ wbs week 3+4 Todo List
 
 ### Api-Objekt -> Klassen-Objekt zum Aufrufen aller Funktionen
 ```javascript
-// das globale TodoList-Array wird mit diesen Todo-Objekten 'gefuellt'
+// Klasse zum Ansprechen der Api
 class TodoListApi { ... }
 
 // Instanz erstellen
@@ -33,7 +33,7 @@ function getList(listName)
 
 > Todo-Funktionen
 ```javascript
-// eine Todo mit 'id' holen
+// ein Todo mit 'id' holen
 function getTodo(id)
 
 // ein Todo hinzufuegen (erwartet ein Objekt der Klasse 'Todo' [siehe unten])

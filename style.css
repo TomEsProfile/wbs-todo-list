@@ -242,3 +242,13 @@ ul li:nth-child(odd):hover {
 input[type=checkbox] {
     transform: scale(1.5);
 }
+
+
+.div-fade-in {
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.fade-in {
+    opacity: 1;
+}
