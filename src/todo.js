@@ -4,7 +4,7 @@ window.addEventListener("load", function (event) {
   console.log("seite fertig geladen");
 
   // sidebar mit Listennamen aufbauen
-  showListList();
+  showListList("", true);
 
   // ... ab hier dann die Seite aufbauen mit den Daten aus der LocalStorage
   // getListTypes().forEach(list => {
